@@ -1,0 +1,10 @@
+.layui-logo span{
+    cursor: pointer;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+}
+.layui-footer{
+    text-align: center;
+}
