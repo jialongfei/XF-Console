@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Rbac;
 use App\Http\Controllers\Controller;
 use App\Http\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
@@ -86,6 +85,8 @@ class UserController extends Controller
 
         if (!password_verify($pwd,$user->password)) return ['status'=>false,'msg'=>PWD_ERR];
 
+        if (!$user->status) return ['status'=>false,'msg'=>'登录失败: 账户已冻结.'];
+
         $rmb && $this->rememberMe($name,$pwd);
 
         Session::put('user',$user->toArray());
@@ -107,20 +108,53 @@ class UserController extends Controller
 
     public function mysetting(Request $request)
     {
-        $id = (int)$request->id;
-
-        if (!$id) error_notice(MISS_PAR);
+        $id = Session::get('user.id');
 
         $info = User::find($id)->toArray();
 
-        if ($request->method() == 'GET'){
+        if (!$info) error_notice(USER_NOT_EXIST);
 
+        if ($request->method() == 'GET'){
+            return view('User.mysetting',$info);
         }else{
+            return (new User())->mySetting($request,$id);
+        }
+
+    }
+
+    public function resetpwd(Request $request)
+    {
+
+        if ($request->method() == 'GET'){
+            return view('User.resetpwd');
+        }else{
+            if (!$request->password || !$request->check_pwd) return ['status'=>false,'msg'=>MISS_PAR];
+
+            if ($request->password != $request->check_pwd) return ['status'=>false,'msg'=>'两次输入密码不一致.'];
+
+            $add_data['password'] = generate_password($request->password);
+
+            $user = User::find(Session::get('user.id'));
+
+            if (!$user) return ['status'=>false,'msg'=>USER_NOT_EXIST];
+
+            $user->password = generate_password($request->password);
+
+            if ($user->save()){
+                return ['status'=>true,'msg'=>UPDATE_SUCCESS];
+            }else{
+                return ['status'=>false,'msg'=>NETWORK_ERR];
+            }
 
         }
 
-        // TODO: 修改个人资料 头像
+    }
 
+    public function uploadAvatar(Request $request)
+    {
+        $file = $request->file('avatar');
+
+        return img_upload_one($file);
     }
 
 }

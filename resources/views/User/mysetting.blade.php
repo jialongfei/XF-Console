@@ -6,12 +6,33 @@
     <link rel="stylesheet" href="/css/popup.css">
     <script src="/layui/layui.js"></script>
 
+    <style>
+        #preview{
+            width: 135px;
+            height: 135px;
+            margin-bottom: 10px;
+        }
+    </style>
+
 </head>
 <body>
 
 <div class="popup-box">
 
-    <form class="layui-form" id="xForm">
+    <form class="layui-form" id="xForm" enctype="multipart/form-data">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">修改头像</label>
+            <div class="layui-input-block">
+                <div class="layui-upload-list layui-inline">
+                    <img class="layui-upload-img" id="preview" src="{{$avatar}}">
+                </div>
+                <div class="layui-upload-drag layui-inline" id="avatar">
+                    <i class="layui-icon"></i>
+                    <p>点击上传，或将文件拖拽到此处</p>
+                </div>
+            </div>
+        </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">用户名</label>
@@ -41,17 +62,12 @@
             </div>
         </div>
 
-        <div class="layui-form-item">
-            <label class="layui-form-label">是否启用</label>
-            <div class="layui-input-block">
-                <input type="checkbox" @if ($status == 1) checked="" @endif name="status" lay-skin="switch" lay-filter="status" lay-text="启用|禁用">
-            </div>
-        </div>
-
         <div class="layui-form-item popup-bottom-btn">
             <button type="submit" class="layui-btn" lay-submit="" lay-filter="editform">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
 
+        <input type="hidden" name="avatar" value="{{$avatar}}" id="avatarInput">
         <input type="hidden" name="id" value="{{$id}}">
 
     </form>
@@ -67,27 +83,37 @@
             ,upload = layui.upload
             ,$ = layui.jquery;
 
-        //监听指定开关
-        form.on('switch(status)', function(data){
-            if (!this.checked){
-                status_notice = layer.tips('温馨提示：被禁用的用户无法登陆本系统', data.othis)
-            }else{
-                layer.close(status_notice)
+        //图片上传
+        var uploadInst = upload.render({
+            elem: '#avatar'
+            ,url: '/upload/avatar'
+            ,field:'avatar'
+            ,headers:{
+                'X-CSRF-TOKEN':"{{ csrf_token() }}"
             }
-
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#preview').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                if(!res.status){
+                    return layer.msg(res.msg);
+                }else{
+                    $('#avatarInput').val(res.path)
+                }
+            }
+            ,error: function(res){
+                return layer.msg(res.msg);
+            }
         });
 
         //监听提交
         form.on('submit(editform)', function(data){
 
-            if (data.field.status == 'on'){
-                data.field.status = "1";
-            }else{
-                data.field.status = "0";
-            }
-
             $.ajax({
-                url: "/user/edit",
+                url: "/mysetting",
                 headers:{
                     'X-CSRF-TOKEN':"{{ csrf_token() }}"
                 },
@@ -97,10 +123,9 @@
                 success: function(data) {
 
                     if(!data.status){
-                        parent.layer.msg(data.msg)
+                        layer.msg(data.msg)
                     }else{
                         parent.layer.msg(data.msg)
-                        parent.layui.table.reload("tableReload");
                         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                         parent.layer.close(index); //再执行关闭
                     }

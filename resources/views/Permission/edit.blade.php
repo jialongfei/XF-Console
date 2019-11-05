@@ -14,37 +14,37 @@
     <form class="layui-form" id="xForm">
 
         <div class="layui-form-item">
-            <label class="layui-form-label">用户名</label>
+            <label class="layui-form-label">权限名称</label>
             <div class="layui-input-block">
-                <input value="{{ $name }}" type="text" name="name" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名" autocomplete="on" class="layui-input">
+                <input value="{{ $name }}" type="text" name="name" lay-verify="required" lay-reqtext="权限名称不能为空" placeholder="请输入权限名称" autocomplete="on" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">手机</label>
+            <label class="layui-form-label">父级权限</label>
             <div class="layui-input-block">
-                <input value="{{ $phone }}" type="tel" name="phone" placeholder="请输入手机号码" lay-verify="required|phone" autocomplete="off" class="layui-input">
+                <input value="{{ $pid }}" type="text" name="pid" placeholder="父级权限" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">邮箱</label>
+            <label class="layui-form-label">URI</label>
             <div class="layui-input-block">
-                <input value="{{ $email }}" type="text" name="email" placeholder="请输入邮箱" lay-verify="required|email" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-
-        <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">备注</label>
-            <div class="layui-input-block">
-                <textarea name="description" placeholder="该用户的备注信息" class="layui-textarea">{{ $description }}</textarea>
+                <input value="{{ $path }}" type="text" name="path" placeholder="对应的URI,如: /user..." class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">是否启用</label>
+            <label class="layui-form-label">排序规则</label>
             <div class="layui-input-block">
-                <input type="checkbox" @if ($status == 1) checked="" @endif name="status" lay-skin="switch" lay-filter="status" lay-text="启用|禁用">
+                <input value="{{ $sort }}" type="text" name="sort" placeholder="排序规则,建议使用10的正整数" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">导航显示</label>
+            <div class="layui-input-block">
+                <input @if ($is_show == 1) checked="" @endif type="checkbox" name="is_show" lay-skin="switch" lay-filter="is_show" lay-text="Show|Hide">
             </div>
         </div>
 
@@ -59,35 +59,31 @@
 </div>
 
 <script>
-    layui.use(['form', 'layedit', 'laydate', 'upload'], function(){
+    layui.use(['form'], function(){
         var form = layui.form
             ,layer = layui.layer
-            ,layedit = layui.layedit
-            ,laydate = layui.laydate
-            ,upload = layui.upload
             ,$ = layui.jquery;
 
         //监听指定开关
-        form.on('switch(status)', function(data){
+        form.on('switch(is_show)', function(data){
             if (!this.checked){
-                status_notice = layer.tips('温馨提示：被禁用的用户无法登陆本系统', data.othis)
+                // 未选中
             }else{
-                layer.close(status_notice)
+                // 选中
             }
-
         });
 
         //监听提交
         form.on('submit(editform)', function(data){
 
-            if (data.field.status == 'on'){
-                data.field.status = "1";
+            if (data.field.is_show == 'on'){
+                data.field.is_show = "1";
             }else{
-                data.field.status = "0";
+                data.field.is_show = "0";
             }
 
             $.ajax({
-                url: "/user/edit",
+                url: "/permission/edit",
                 headers:{
                     'X-CSRF-TOKEN':"{{ csrf_token() }}"
                 },

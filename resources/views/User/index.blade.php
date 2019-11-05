@@ -61,8 +61,8 @@
                 ,title: '数据列表'
                 ,cols: [[
                     {type: 'checkbox', fixed: 'left'}
-                    ,{field:'id', title:'ID', fixed: 'left'}
-                    ,{field:'name', title:'用户名', templet: function (res) {
+                    ,{field:'id', title:'ID', hide: true}
+                    ,{field:'name', title:'用户名', fixed: 'left', templet: function (res) {
                             return "<span class='detail-btn' data-id='"+res.id+"'>"+res.name+"</span>";
                         }}
                     ,{field:'email', title:'邮箱'}

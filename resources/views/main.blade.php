@@ -25,8 +25,8 @@
                     {{\Illuminate\Support\Facades\Session::get('user.name')}}
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="javascript:;" id="mysetting" data-id="{{\Illuminate\Support\Facades\Session::get('user.id')}}">个人信息</a></dd>
-                    <dd><a href="">登录密码</a></dd>
+                    <dd><a href="javascript:;" id="mysetting">个人信息</a></dd>
+                    <dd><a href="javascript:;" id="resetPwd">登录密码</a></dd>
                     <dd><a href="/logout">退出登录</a></dd>
                 </dl>
             </li>
@@ -37,21 +37,20 @@
         <div class="layui-side-scroll">
             {{--      left nav      --}}
             <ul class="layui-nav layui-nav-tree" lay-filter="test">
-                <li class="layui-nav-item layui-nav-itemed">
-                    <a class="" href="javascript:;">用户</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="/user">用户</a></dd>
-                        <dd><a href="/role">角色</a></dd>
-                        <dd><a href="/permission">权限</a></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;">文章</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">分类</a></dd>
-                        <dd><a href="javascript:;">文章</a></dd>
-                    </dl>
-                </li>
+                @foreach ($navs as $nav)
+                    @if ($nav->pid == 0 && $nav->is_show == 1)
+                        <li class="layui-nav-item left-nav-box">
+                            <a class="" href="javascript:;">{{ $nav->name }}</a>
+                            <dl class="layui-nav-child">
+                            @foreach ($navs as $child)
+                                @if ($child->pid == $nav->id && $child->is_show == 1)
+                                    <dd class="left-nav-child {{'/'.\Illuminate\Support\Facades\Request::path()==$child->path?'layui-this':''}}"><a href="{{ $child->path }}">{{ $child->name }}</a></dd>
+                                @endif
+                            @endforeach
+                            </dl>
+                        </li>
+                    @endif
+                @endforeach
             </ul>
         </div>
     </div>
