@@ -11,8 +11,32 @@
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
+DB::listen(function($query){
+    Log::info($query->sql);
+});
 
-Route::get('/', 'Index\IndexController@index');
+Route::match(['get', 'post'], '/login', 'Rbac\UserController@login');
+
+Route::get('/logout', 'Rbac\UserController@logout');
+
+Route::group(['middleware' => ['islogin']], function () {
+
+    Route::get('/', 'Index\IndexController@Index');
+
+    Route::get('/role', 'Rbac\RoleController@Index');
+
+    Route::get('/permission', 'Rbac\PermissionController@Index');
+
+    Route::match(['get', 'post'], '/user', 'Rbac\UserController@Index');
+
+    Route::match(['get', 'post'], '/user/add', 'Rbac\UserController@add');
+
+    Route::match(['get', 'post'], '/user/edit', 'Rbac\UserController@edit');
+
+    Route::match(['get', 'post'], '/mysetting', 'Rbac\UserController@mysetting');
+
+    Route::post('/user/del', 'Rbac\UserController@delete');
+
+    Route::get('/user/detail', 'Rbac\UserController@detail');
+
+});

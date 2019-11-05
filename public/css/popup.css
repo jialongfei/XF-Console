@@ -1,0 +1,40 @@
+/*滚动条样式*/
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-thumb{
+    background-color: #bfbfbf;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:vertical:hover{
+    background-color: #009688;
+}
+::-webkit-scrollbar-thumb:vertical:active{
+    background-color: #009688;
+}
+::-webkit-scrollbar-button{
+    display: none;
+}
+::-webkit-scrollbar-track{
+    background-color: rgb(239, 239, 239);
+}
+/*容器基本样式*/
+.popup-box{
+    padding: 15px;
+}
+/*图像上传预览样式*/
+#avatarImg{
+    width: 100px;
+    height: 100px;
+}
+.choose-avatar{
+    margin-left: 20px;
+}
+.popup-bottom-btn{
+    position: relative;
+    bottom: 0;
+    text-align: center !important;
+}
+
