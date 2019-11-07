@@ -59,7 +59,7 @@
             <div class="layui-col-xs6">
                 <div class="info-item">
                     <span class="info-title">创建人： </span>
-                    <span class="info-content">{{$create_user_id}}</span>
+                    <span class="info-content">{{$create_user_name}}</span>
                 </div>
             </div>
             <div class="layui-col-xs6">
@@ -74,7 +74,7 @@
             <div class="layui-col-xs6">
                 <div class="info-item">
                     <span class="info-title">更新人： </span>
-                    <span class="info-content">{{$update_user_id}}</span>
+                    <span class="info-content">{{$update_user_name}}</span>
                 </div>
             </div>
             <div class="layui-col-xs6">

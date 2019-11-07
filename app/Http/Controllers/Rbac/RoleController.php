@@ -57,7 +57,7 @@ class RoleController extends Controller
 
         if (!$id) error_notice(MISS_PAR);
 
-        $info = Role::find($id)->toArray();
+        $info = (new Role())->getDetail($id);
 
         if (!$info) error_notice(DATA_ERR);
 

@@ -38,12 +38,12 @@
             {{--      left nav      --}}
             <ul class="layui-nav layui-nav-tree" lay-filter="test">
                 @foreach ($navs as $nav)
-                    @if ($nav->pid == 0 && $nav->is_show == 1)
+                    @if ($nav->pid == 0 && $nav->is_show == 1 && in_array($nav->id,\Illuminate\Support\Facades\Session::get('permissions')))
                         <li class="layui-nav-item left-nav-box">
                             <a class="" href="javascript:;">{{ $nav->name }}</a>
                             <dl class="layui-nav-child">
                             @foreach ($navs as $child)
-                                @if ($child->pid == $nav->id && $child->is_show == 1)
+                                @if ($child->pid == $nav->id && $child->is_show == 1 && in_array($child->id,\Illuminate\Support\Facades\Session::get('permissions')))
                                     <dd class="left-nav-child {{'/'.\Illuminate\Support\Facades\Request::path()==$child->path?'layui-this':''}}"><a href="{{ $child->path }}">{{ $child->name }}</a></dd>
                                 @endif
                             @endforeach

@@ -16,35 +16,43 @@
         <div class="layui-form-item">
             <label class="layui-form-label">权限名称</label>
             <div class="layui-input-block">
-                <input value="{{ $name }}" type="text" name="name" lay-verify="required" lay-reqtext="权限名称不能为空" placeholder="请输入权限名称" autocomplete="on" class="layui-input">
+                <input value="{{ $info->name }}" type="text" name="name" lay-verify="required" lay-reqtext="权限名称不能为空" placeholder="请输入权限名称" autocomplete="on" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">父级权限</label>
             <div class="layui-input-block">
-                <input value="{{ $pid }}" type="text" name="pid" placeholder="父级权限" class="layui-input">
+                <select name="pid" placeholder="父级权限" lay-search="">
+                    <option value="">父级权限：可直接选择或搜索选择</option>
+                    @foreach ($parent_list as $parent)
+                        <option {{ $parent->id == $info->pid ?'selected':'' }} value="{{ $parent->id }}">{{ $parent->name }}</option>
+                        @foreach ($parent->children as $children)
+                            <option {{ $children->id == $info->pid ?'selected':'' }} value="{{ $children->id }}">　　{{ $children->name }}</option>
+                        @endforeach
+                    @endforeach
+                </select>
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">URI</label>
             <div class="layui-input-block">
-                <input value="{{ $path }}" type="text" name="path" placeholder="对应的URI,如: /user..." class="layui-input">
+                <input value="{{ $info->path }}" type="text" name="path" placeholder="对应的URI,如: /user..." class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">排序规则</label>
             <div class="layui-input-block">
-                <input value="{{ $sort }}" type="text" name="sort" placeholder="排序规则,建议使用10的正整数" class="layui-input">
+                <input value="{{ $info->sort }}" type="text" name="sort" placeholder="排序规则,建议使用10的正整数" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">导航显示</label>
             <div class="layui-input-block">
-                <input @if ($is_show == 1) checked="" @endif type="checkbox" name="is_show" lay-skin="switch" lay-filter="is_show" lay-text="Show|Hide">
+                <input @if ($info->is_show == 1) checked="" @endif type="checkbox" name="is_show" lay-skin="switch" lay-filter="is_show" lay-text="Show|Hide">
             </div>
         </div>
 
@@ -52,7 +60,7 @@
             <button type="submit" class="layui-btn" lay-submit="" lay-filter="editform">立即提交</button>
         </div>
 
-        <input type="hidden" name="id" value="{{$id}}">
+        <input type="hidden" name="id" value="{{$info->id}}">
 
     </form>
 

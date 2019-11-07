@@ -23,7 +23,15 @@
         <div class="layui-form-item">
             <label class="layui-form-label">父级权限</label>
             <div class="layui-input-block">
-                <input type="text" name="pid" placeholder="父级权限" class="layui-input">
+                <select name="pid" placeholder="父级权限" lay-search="">
+                    <option value="">父级权限：可直接选择或搜索选择</option>
+                    @foreach ($parent_list as $parent)
+                        <option value="{{ $parent->id }}">{{ $parent->name }}</option>
+                        @foreach ($parent->children as $children)
+                            <option value="{{ $children->id }}">　　{{ $children->name }}</option>
+                        @endforeach
+                    @endforeach
+                </select>
             </div>
         </div>
 

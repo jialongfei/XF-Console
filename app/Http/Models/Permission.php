@@ -37,6 +37,18 @@ class Permission extends Model
         return $parents;
     }
 
+    public function getParentTree()
+    {
+        $parents = $this->where('pid','=',0)->orderBy('sort', 'ASC')->get();
+
+        foreach ($parents as $k => $v){
+            $child = $this->where('pid','=',$v['id'])->orderBy('sort', 'ASC')->get();
+            $parents[$k]['children'] = $child;
+        }
+
+        return $parents;
+    }
+
     public function getLists($request)
     {
         $where = [];
@@ -47,9 +59,10 @@ class Permission extends Model
         $request->search && $where[] = ['p.name','like','%'.$request->search.'%'];
 
         $list = $this->from('permission as p')
+            ->leftJoin('permission as parent_p','p.pid','=','parent_p.id')
             ->leftJoin('users as create_u','p.create_user_id','=','create_u.id')
             ->leftJoin('users as update_u','p.update_user_id','=','update_u.id')
-            ->select(['p.*', 'create_u.name as create_user_name', 'update_u.name as update_user_name'])
+            ->select(['p.*', 'create_u.name as create_user_name', 'update_u.name as update_user_name','parent_p.name as parent_name'])
             ->where($where)
             ->orderBy('sort', 'ASC')
             ->offset($page*$limit)->limit($limit)
@@ -70,6 +83,19 @@ class Permission extends Model
             'msg'=>'success!',
             'data'=> $list
         ];
+    }
+
+    public function getDetail($id)
+    {
+        $info = $this->from('permission as p')
+            ->leftJoin('permission as parent_p','p.pid','=','parent_p.id')
+            ->leftJoin('users as create_u','p.create_user_id','=','create_u.id')
+            ->leftJoin('users as update_u','p.update_user_id','=','update_u.id')
+            ->select(['p.*', 'create_u.name as create_user_name', 'update_u.name as update_user_name','parent_p.name as parent_name'])
+            ->where('p.id','=',$id)
+            ->first();
+
+        return $info;
     }
 
     public function addData($request)
@@ -168,6 +194,9 @@ class Permission extends Model
         try {
 
             $this->destroy($request->ids);
+
+            // 删除关联数据
+            (new RolePer())->whereIn('permission_id', $request->ids)->delete();
 
             return ['status'=>true,'msg'=>'已删除'];
 

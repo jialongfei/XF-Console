@@ -103,12 +103,15 @@
                 $(this).parent().parent().prevAll('.layui-input-inline').find('.layui-unselect').addClass('layui-form-checked')
                 $(this).parent().parent().prevAll('.layui-input-inline').find('.percheckedbox').prop("checked", true);
 
+                $(this).parent().parent().parent().prevAll('.layui-input-inline').find('.layui-unselect').addClass('layui-form-checked')
+                $(this).parent().parent().parent().prevAll('.layui-input-inline').find('.percheckedbox').prop("checked", true);
+
                 $(this).parent().nextAll('.pl-30').find('.layui-unselect').addClass('layui-form-checked')
                 $(this).parent().nextAll('.pl-30').find('.percheckedbox').prop("checked", true);
             }else{
 
-                $(this).parent().parent().prevAll('.layui-input-inline').find('.layui-unselect').removeClass('layui-form-checked')
-                $(this).parent().parent().prevAll('.layui-input-inline').find('.percheckedbox').prop("checked", false);
+                // $(this).parent().parent().prevAll('.layui-input-inline').find('.layui-unselect').removeClass('layui-form-checked')
+                // $(this).parent().parent().prevAll('.layui-input-inline').find('.percheckedbox').prop("checked", false);
 
                 $(this).parent().nextAll('.pl-30').find('.layui-unselect').removeClass('layui-form-checked')
                 $(this).parent().nextAll('.pl-30').find('.percheckedbox').prop("checked", false);

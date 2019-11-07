@@ -18,7 +18,13 @@ class PermissionController extends Controller
 
     public function add(Request $request)
     {
-        if ($request->method() == 'GET') return view('Permission.add');
+        if ($request->method() == 'GET')
+        {
+            // get permission parent tree
+            $parent_tree = (new Permission())->getParentTree();
+
+            return view('Permission.add',['parent_list'=>$parent_tree]);
+        }
 
         return (new Permission())->addData($request);
     }
@@ -31,9 +37,12 @@ class PermissionController extends Controller
 
         if ($request->method() == 'GET')
         {
-            $info = Permission::find($id)->toArray();
+            $info = Permission::find($id);
 
-            return view('Permission.edit',$info);
+            // get permission parent tree
+            $parent_tree = (new Permission())->getParentTree();
+
+            return view('Permission.edit',['info'=>$info,'parent_list'=>$parent_tree]);
         }else{
             return (new Permission())->editData($request,$id);
         }
@@ -53,7 +62,7 @@ class PermissionController extends Controller
 
         if (!$id) error_notice(MISS_PAR);
 
-        $info = Permission::find($id)->toArray();
+        $info = (new Permission())->getDetail($id);
 
         if (!$info) error_notice(DATA_ERR);
 

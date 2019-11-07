@@ -51,6 +51,18 @@ class Role extends Model
         ];
     }
 
+    public function getDetail($id)
+    {
+        $info = $this->from('role as r')
+            ->leftJoin('users as create_u','r.create_user_id','=','create_u.id')
+            ->leftJoin('users as update_u','r.update_user_id','=','update_u.id')
+            ->select(['r.*', 'create_u.name as create_user_name', 'update_u.name as update_user_name'])
+            ->where('r.id','=',$id)
+            ->first();
+
+        return $info;
+    }
+
     public function addData($request)
     {
         $validatedData = $request->validate([
@@ -131,6 +143,9 @@ class Role extends Model
         try {
 
             $this->destroy($request->ids);
+
+            // 删除关联数据
+            (new RolePer())->whereIn('role_id', $request->ids)->delete();
 
             return ['status'=>true,'msg'=>'已删除'];
 

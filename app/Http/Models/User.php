@@ -58,11 +58,18 @@ class User extends Model
 
     public function getDetail($id)
     {
-        $info = $this->find($id);
+        $info = $this->from('users as u')
+            ->leftJoin('users as create_u','u.create_user_id','=','create_u.id')
+            ->leftJoin('users as update_u','u.update_user_id','=','update_u.id')
+            ->select(['u.*', 'create_u.name as create_user_name', 'update_u.name as update_user_name'])
+            ->where('u.id','=',$id)
+            ->first();
+
         if ($info){
             $info->roles;
             $info->role_names = implode('|',array_map(function ($v){ return $v['name']; },$info->roles->toArray()))?:'暂无';
         }
+
         return $info;
     }
 
@@ -146,7 +153,7 @@ class User extends Model
         }
 
         // 检查接收到的修改数据是否有变化，有则验证并更新，无则忽略
-        if (array_diff($old_data,$request->all())){
+        if (array_diff($old_data,$request->all()) || array_diff($request->all(),$old_data)){
             $validatedData = $request->validate([
                 'name' => 'string',
                 "phone"=>[
@@ -197,6 +204,9 @@ class User extends Model
         try {
 
             $this->destroy($request->ids);
+
+            // 删除关联数据
+            (new UserRole())->whereIn('user_id', $request->ids)->delete();
 
             return ['status'=>true,'msg'=>'已删除'];
 

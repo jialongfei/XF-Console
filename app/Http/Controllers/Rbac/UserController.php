@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Rbac;
 
 use App\Http\Controllers\Controller;
+use App\Http\Models\Permission;
 use App\Http\Models\Role;
+use App\Http\Models\RolePer;
 use App\Http\Models\User;
 use App\Http\Models\UserRole;
 use Illuminate\Http\Request;
@@ -15,7 +17,6 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-
         if ($request->method() == 'GET') return view('User.Index');
 
         return (new User())->getLists($request);
@@ -58,7 +59,7 @@ class UserController extends Controller
 
         if (!$id) error_notice(MISS_PAR);
 
-        $info = User::find($id)->toArray();
+        $info = (new User())->getDetail($id);
 
         if (!$info) error_notice(DATA_ERR);
 
@@ -90,11 +91,54 @@ class UserController extends Controller
 
         if (!$user->status) return ['status'=>false,'msg'=>'登录失败: 账户已冻结.'];
 
-        $rmb && $this->rememberMe($name,$pwd);
+        if (in_array($user->id,['1'])){
+            $_power = (new Permission())->get()->toArray();
 
-        Session::put('user',$user->toArray());
+            $power_path = array_map(function ($v){ return $v['path']; },$_power)?:[];
 
-        return ['status'=>true,'msg'=>LOGIN_SUCCESS];
+            $power = array_map(function ($v){ return $v['id']; },$_power)?:[];
+
+            Session::put('permissions',$power);
+
+            Session::put('is_admin',true);
+
+            Session::put('permissionlist',$power_path);
+
+            $rmb && $this->rememberMe($name,$pwd);
+
+            Session::put('user',$user->toArray());
+
+            return ['status'=>true,'msg'=>LOGIN_SUCCESS];
+        }else{
+            // get current user permissions
+            $has_roles = (new UserRole())->where('user_id','=',$user->id)->select('role_id')->get()->toArray();
+
+            $role_ids = array_map(function ($v){ return $v['role_id']; },$has_roles);
+
+            if (!$role_ids) return ['status'=>false,'msg'=>'登录失败: 请联系管理员开通权限.'];
+
+            $power_list = (new RolePer())->whereIn('role_id', $role_ids)->select('permission_id')->get()->toArray();
+
+            $power_ids = array_unique(array_map(function ($v){ return $v['permission_id']; },$power_list));
+
+            if (!$power_ids) return ['status'=>false,'msg'=>'登录失败: 请联系管理员开通权限.'];
+
+            $_power = (new Permission())->whereIn('id',$power_ids)->get()->toArray();
+
+            $power_path = array_map(function ($v){ return $v['path']; },$_power)?:[];
+
+            $power = array_map(function ($v){ return $v['id']; },$_power)?:[];
+
+            Session::put('permissions',$power);
+
+            Session::put('permissionlist',$power_path);
+
+            $rmb && $this->rememberMe($name,$pwd);
+
+            Session::put('user',$user->toArray());
+
+            return ['status'=>true,'msg'=>LOGIN_SUCCESS];
+        }
     }
 
     public function rememberMe($name,$pwd)

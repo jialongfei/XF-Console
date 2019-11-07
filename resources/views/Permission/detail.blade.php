@@ -50,7 +50,7 @@
             <div class="layui-col-xs6">
                 <div class="info-item">
                     <span class="info-title">父级权限： </span>
-                    <span class="info-content">{{$pid}}</span>
+                    <span class="info-content">{{$parent_name?:'-'}}</span>
                 </div>
             </div>
             <div class="layui-col-xs6">
@@ -71,7 +71,7 @@
             <div class="layui-col-xs6">
                 <div class="info-item">
                     <span class="info-title">导航显示： </span>
-                    <span class="info-content">{{$is_show}}</span>
+                    <span class="info-content">{{$is_show?'Show':'Hide'}}</span>
                 </div>
             </div>
         </div>
@@ -80,7 +80,7 @@
             <div class="layui-col-xs6">
                 <div class="info-item">
                     <span class="info-title">创建人： </span>
-                    <span class="info-content">{{$create_user_id}}</span>
+                    <span class="info-content">{{$create_user_name}}</span>
                 </div>
             </div>
             <div class="layui-col-xs6">
@@ -95,7 +95,7 @@
             <div class="layui-col-xs6">
                 <div class="info-item">
                     <span class="info-title">更新人： </span>
-                    <span class="info-content">{{$update_user_id}}</span>
+                    <span class="info-content">{{$update_user_name}}</span>
                 </div>
             </div>
             <div class="layui-col-xs6">

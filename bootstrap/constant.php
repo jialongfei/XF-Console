@@ -17,3 +17,5 @@ define('EXIST_LOGIN','已登录,无需重复登录.');
 define('UPDATE_SUCCESS','修改成功.');
 
 define('NETWORK_ERR','网络异常,请稍后再试.');
+
+define('PER_ERR','无相关操作权限.');

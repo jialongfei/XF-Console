@@ -76,6 +76,15 @@
         <div class="layui-row">
             <div class="layui-col-xs12">
                 <div class="info-item">
+                    <span class="info-title">当前角色： </span>
+                    <span class="info-longtext">{{$role_names}}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-row">
+            <div class="layui-col-xs12">
+                <div class="info-item">
                     <span class="info-title">描述： </span>
                     <span class="info-longtext">{{$description}}</span>
                 </div>
@@ -86,7 +95,7 @@
             <div class="layui-col-xs6">
                 <div class="info-item">
                     <span class="info-title">创建人： </span>
-                    <span class="info-content">{{$create_user_id}}</span>
+                    <span class="info-content">{{$create_user_name}}</span>
                 </div>
             </div>
             <div class="layui-col-xs6">
@@ -101,7 +110,7 @@
             <div class="layui-col-xs6">
                 <div class="info-item">
                     <span class="info-title">更新人： </span>
-                    <span class="info-content">{{$update_user_id}}</span>
+                    <span class="info-content">{{$update_user_name}}</span>
                 </div>
             </div>
             <div class="layui-col-xs6">

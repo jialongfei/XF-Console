@@ -23,7 +23,7 @@ Route::match(['get', 'post'], '/login', 'Rbac\UserController@login');
 Route::get('/logout', 'Rbac\UserController@logout');
 
 // Check login status
-Route::group(['middleware' => ['islogin']], function () {
+Route::group(['middleware' => ['islogin','checkper']], function () {
 
     // Main page
     Route::get('/', 'Index\IndexController@Index');

@@ -65,7 +65,9 @@
                     ,{field:'name', title:'权限名称', fixed: 'left', templet: function (res) {
                             return "<span class='detail-btn' data-id='"+res.id+"'>"+res.name+"</span>";
                         }}
-                    ,{field:'pid', title:'父级权限'}
+                    ,{field:'parent_name', title:'父级权限', templet: function (res) {
+                            return res.parent_name?res.parent_name:'-';
+                        }}
                     ,{field:'path', title:'URI'}
                     ,{field:'sort', title:'排序'}
                     ,{field:'is_show', title:'导航显示', templet: function (res) {
