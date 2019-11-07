@@ -40,17 +40,38 @@
         <div class="layui-row">
             <div class="layui-col-xs12">
                 <div class="info-item">
-                    <span class="info-title">角色名称： </span>
+                    <span class="info-title">权限名称： </span>
                     <span class="info-content">{{$name}}</span>
                 </div>
             </div>
         </div>
 
         <div class="layui-row">
-            <div class="layui-col-xs12">
+            <div class="layui-col-xs6">
                 <div class="info-item">
-                    <span class="info-title">角色描述： </span>
-                    <span class="info-longtext">{{$description}}</span>
+                    <span class="info-title">父级权限： </span>
+                    <span class="info-content">{{$pid}}</span>
+                </div>
+            </div>
+            <div class="layui-col-xs6">
+                <div class="info-item">
+                    <span class="info-title">URI： </span>
+                    <span class="info-content">{{$path}}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-row">
+            <div class="layui-col-xs6">
+                <div class="info-item">
+                    <span class="info-title">排序规则： </span>
+                    <span class="info-content">{{$sort}}</span>
+                </div>
+            </div>
+            <div class="layui-col-xs6">
+                <div class="info-item">
+                    <span class="info-title">导航显示： </span>
+                    <span class="info-content">{{$is_show}}</span>
                 </div>
             </div>
         </div>

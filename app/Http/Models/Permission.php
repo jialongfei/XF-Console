@@ -19,6 +19,24 @@ class Permission extends Model
         return $this->select('id','name','pid','path','sort','is_show')->orderBy('sort', 'ASC')->get();
     }
 
+    public function getTree()
+    {
+        $parents = $this->where('pid','=',0)->orderBy('sort', 'ASC')->get();
+
+        foreach ($parents as $k => $v){
+            $child = $this->where('pid','=',$v['id'])->orderBy('sort', 'ASC')->get();
+
+            foreach ($child as $c_k => $c_v){
+                $child[$c_k]['children'] = $this->where('pid','=',$c_v['id'])->orderBy('sort', 'ASC')->get();
+            }
+
+            $parents[$k]['children'] = $child;
+
+        }
+
+        return $parents;
+    }
+
     public function getLists($request)
     {
         $where = [];

@@ -32,6 +32,7 @@ Route::group(['middleware' => ['islogin']], function () {
     Route::match(['get', 'post'], '/user', 'Rbac\UserController@index');
     Route::match(['get', 'post'], '/user/add', 'Rbac\UserController@add');
     Route::match(['get', 'post'], '/user/edit', 'Rbac\UserController@edit');
+    Route::match(['get', 'post'], '/user/role', 'Rbac\UserController@changerole');
     Route::post('/user/del', 'Rbac\UserController@delete');
     Route::get('/user/detail', 'Rbac\UserController@detail');
 
@@ -44,6 +45,7 @@ Route::group(['middleware' => ['islogin']], function () {
     Route::match(['get', 'post'], '/role', 'Rbac\RoleController@index');
     Route::match(['get', 'post'], '/role/add', 'Rbac\RoleController@add');
     Route::match(['get', 'post'], '/role/edit', 'Rbac\RoleController@edit');
+    Route::match(['get', 'post'], '/role/permission', 'Rbac\RoleController@changeper');
     Route::post('/role/del', 'Rbac\RoleController@delete');
     Route::get('/role/detail', 'Rbac\RoleController@detail');
 

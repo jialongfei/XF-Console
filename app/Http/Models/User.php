@@ -31,8 +31,14 @@ class User extends Model
             ->where($where)
             ->orderBy('id', 'DESC')
             ->offset($page*$limit)->limit($limit)
-            ->get()
-            ->toArray();
+            ->get();
+
+        foreach ($list as $user) {
+            if ($user) {
+                $user->roles;
+                $user->role_names = implode('|',array_map(function ($v){ return $v['name']; },$user->roles->toArray()))?:'暂无';
+            }
+        }
 
         $count = $this->from('users as u')
             ->leftJoin('users as create_u','u.create_user_id','=','create_u.id')
@@ -48,6 +54,22 @@ class User extends Model
             'msg'=>'success!',
             'data'=> $list
         ];
+    }
+
+    public function getDetail($id)
+    {
+        $info = $this->find($id);
+        if ($info){
+            $info->roles;
+            $info->role_names = implode('|',array_map(function ($v){ return $v['name']; },$info->roles->toArray()))?:'暂无';
+        }
+        return $info;
+    }
+
+    public function roles()
+    {
+        //指定自定义命名生成关联表的键名，外键等  par1 = 关联模型，par2 = 中间表名称，par3 = 当前模型在中间表的关联字段名称，par4 = 关联模型在中间表的关联字段名称
+        return $this->belongsToMany(Role::class, 'user_role', 'user_id', 'role_id');
     }
 
     public function addData($request)

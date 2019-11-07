@@ -65,6 +65,9 @@
                     ,{field:'name', title:'角色名称', fixed: 'left', templet: function (res) {
                             return "<span class='detail-btn' data-id='"+res.id+"'>"+res.name+"</span>";
                         }}
+                    ,{field:'xxx', title:'权限', templet: function (res) {
+                            return "<span class='changeper-btn' data-id='"+res.id+"'>权限分配</span>";
+                        }}
                     ,{field:'description', title:'备注'}
                     ,{field:'created_at', title:'创建时间'}
                     ,{field:'create_user_name', title:'创建人'}
@@ -208,6 +211,18 @@
                     content: [window.location.href+'/detail'+'?id='+$(this).data('id'), 'yes'], // 若禁止显示iframe中的滚动条将 yes 改为 no
                     anim:0,
                     id:'detailPage'
+                });
+            })
+
+            $(document).on('click','.changeper-btn',function(){
+                layer.open({
+                    type: 2,
+                    title: '权限分配',
+                    area: [document.documentElement.clientWidth*0.5 +'px', document.documentElement.clientHeight*0.9 +'px'],
+                    shadeClose:true,
+                    content: [window.location.href+'/permission'+'?id='+$(this).data('id'), 'yes'], // 若禁止显示iframe中的滚动条将 yes 改为 no
+                    anim:0,
+                    id:'permissionPage'
                 });
             })
 

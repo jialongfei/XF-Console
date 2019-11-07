@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Rbac;
 
 use App\Http\Controllers\Controller;
+use App\Http\Models\Role;
 use App\Http\Models\User;
+use App\Http\Models\UserRole;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
@@ -155,6 +158,59 @@ class UserController extends Controller
         $file = $request->file('avatar');
 
         return img_upload_one($file);
+    }
+
+    public function changerole(Request $request)
+    {
+        $id = (int)$request->id;
+
+        if (!$id) error_notice(MISS_PAR);;
+
+        $role_list = (new Role())->get();
+
+        $has_role_list = (new UserRole())->where('user_id','=',$id)->get()->toArray();
+
+        $has_role_ids = array_map(function ($v){ return $v['role_id']; },$has_role_list);
+
+        if ($request->method() == 'GET')
+        {
+            return view('User.changerole',['role_list'=>$role_list,'has_role'=>$has_role_ids,'id'=>$id]);
+        }else{
+
+            $new_roleids = (array)$request->role_ids;
+
+            (new UserRole())->where('user_id','=',$id)->delete();
+
+            if (!$new_roleids) return ['status'=>true, 'msg'=>'数据已更新'];
+
+            $new_data = [];
+            $new_data['user_id'] = $id;
+            $new_data['update_user_id'] = Session::get('user.id');
+
+            try
+            {
+
+                foreach ($new_roleids as $k => $v){
+                    $new_data['role_id'] = $v;
+                    (new UserRole())->create($new_data);
+                }
+
+                return [
+                    'status'=>true,
+                    'msg'=>'数据已更新'
+                ];
+
+            } catch(\Exception $e) {
+                Log::error($e->getMessage());
+
+                return [
+                    'status'=>false,
+                    'msg'=>$e->getCode().': 网络异常，请稍后再试 或 联系管理员',
+                    'debug'=>$e->getMessage(),
+                ];
+            }
+
+        }
     }
 
 }

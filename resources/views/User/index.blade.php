@@ -65,6 +65,9 @@
                     ,{field:'name', title:'用户名', fixed: 'left', templet: function (res) {
                             return "<span class='detail-btn' data-id='"+res.id+"'>"+res.name+"</span>";
                         }}
+                    ,{field:'role_names', title:'当前角色', templet: function (res) {
+                            return "<span class='role-name-btn' data-id='"+res.id+"'>"+res.role_names+"</span>";
+                        }}
                     ,{field:'email', title:'邮箱'}
                     ,{field:'phone', title:'手机'}
                     ,{field:'description', title:'备注'}
@@ -211,6 +214,18 @@
                     content: [window.location.href+'/detail'+'?id='+$(this).data('id'), 'yes'], // 若禁止显示iframe中的滚动条将 yes 改为 no
                     anim:0,
                     id:'detailPage'
+                });
+            })
+
+            $(document).on('click','.role-name-btn',function(){
+                layer.open({
+                    type: 2,
+                    title: '角色分配',
+                    area: [document.documentElement.clientWidth*0.5 +'px', document.documentElement.clientHeight*0.9 +'px'],
+                    shadeClose:true,
+                    content: [window.location.href+'/role'+'?id='+$(this).data('id'), 'yes'], // 若禁止显示iframe中的滚动条将 yes 改为 no
+                    anim:0,
+                    id:'rolePage'
                 });
             })
 
