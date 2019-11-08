@@ -56,6 +56,13 @@ Route::group(['middleware' => ['islogin','checkper']], function () {
     Route::post('/permission/del', 'Rbac\PermissionController@delete');
     Route::get('/permission/detail', 'Rbac\PermissionController@detail');
 
+    // Site - links
+    Route::match(['get', 'post'], '/link', 'Site\LinkController@index');
+    Route::match(['get', 'post'], '/link/add', 'Site\LinkController@add');
+    Route::match(['get', 'post'], '/link/edit', 'Site\LinkController@edit');
+    Route::post('/link/del', 'Site\LinkController@delete');
+    Route::get('/link/detail', 'Site\LinkController@detail');
+
     // Newscate
     Route::match(['get', 'post'], '/newscate', 'Rbac\PermissionController@index');
 

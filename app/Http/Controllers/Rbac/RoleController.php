@@ -15,7 +15,7 @@ class RoleController extends Controller
     public function index(Request $request)
     {
 
-        if ($request->method() == 'GET') return view('Role.Index');
+        if ($request->method() == 'GET') return view('Role.index');
 
         return (new Role())->getLists($request);
     }

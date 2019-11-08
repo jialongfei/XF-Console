@@ -15,7 +15,7 @@
         <div class="layui-logo"><span>XF - Console</span></div>
         {{--    top - left nav    --}}
         <ul class="layui-nav layui-layout-left">
-            <li class="layui-nav-item"><a href="/">系统设置</a></li>
+{{--            <li class="layui-nav-item"><a href="/">系统设置</a></li>--}}
         </ul>
         {{--    top - right nav    --}}
         <ul class="layui-nav layui-layout-right">

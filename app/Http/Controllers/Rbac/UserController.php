@@ -17,7 +17,7 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->method() == 'GET') return view('User.Index');
+        if ($request->method() == 'GET') return view('User.index');
 
         return (new User())->getLists($request);
     }

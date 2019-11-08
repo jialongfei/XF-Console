@@ -11,7 +11,7 @@ class PermissionController extends Controller
     public function index(Request $request)
     {
 
-        if ($request->method() == 'GET') return view('Permission.Index');
+        if ($request->method() == 'GET') return view('Permission.index');
 
         return (new Permission())->getLists($request);
     }

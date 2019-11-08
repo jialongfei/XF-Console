@@ -6,19 +6,6 @@
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Rbac/PermissionController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Rbac/PermissionController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Rbac/RoleController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Rbac/RoleController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Rbac/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Rbac/UserController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Kernel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Kernel.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Models/Permission.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Models/Permission.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Models/Role.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Models/Role.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Models/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bootstrap/constant.php" beforeDir="false" afterPath="$PROJECT_DIR$/bootstrap/constant.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/Permission/add.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Permission/add.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/Permission/detail.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Permission/detail.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/Permission/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Permission/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/Permission/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Permission/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/Role/changeper.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Role/changeper.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/Role/detail.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Role/detail.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/User/detail.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/User/detail.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/main.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/main.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -141,7 +128,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_package_manager_path" value="yarn" />
-    <property name="settings.editor.selected.configurable" value="editing.templates" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -182,7 +169,9 @@
       <workItem from="1572829637402" duration="25116000" />
       <workItem from="1572915772041" duration="27954000" />
       <workItem from="1573003387616" duration="23354000" />
-      <workItem from="1573089901498" duration="17249000" />
+      <workItem from="1573089901498" duration="20190000" />
+      <workItem from="1573175810059" duration="224000" />
+      <workItem from="1573176113389" duration="2678000" />
     </task>
     <servers />
   </component>
