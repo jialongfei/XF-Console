@@ -63,10 +63,25 @@ Route::group(['middleware' => ['islogin','checkper']], function () {
     Route::post('/link/del', 'Site\LinkController@delete');
     Route::get('/link/detail', 'Site\LinkController@detail');
 
-    // Newscate
-    Route::match(['get', 'post'], '/newscate', 'Rbac\PermissionController@index');
+    // ArticleCate
+    Route::match(['get', 'post'], '/article/cate', 'Article\ArticleCateController@index');
+    Route::match(['get', 'post'], '/article/cate/add', 'Article\ArticleCateController@add');
+    Route::match(['get', 'post'], '/article/cate/edit', 'Article\ArticleCateController@edit');
+    Route::post('/article/cate/del', 'Article\ArticleCateController@delete');
+    Route::get('/article/cate/detail', 'Article\ArticleCateController@detail');
 
-    // News
-    Route::match(['get', 'post'], '/news', 'Rbac\PermissionController@index');
+    // Article
+    Route::match(['get', 'post'], '/article', 'Article\ArticleController@index');
+    Route::match(['get', 'post'], '/article/add', 'Article\ArticleController@add');
+    Route::match(['get', 'post'], '/article/edit', 'Article\ArticleController@edit');
+    Route::post('/article/del', 'Article\ArticleController@delete');
+    Route::get('/article/detail', 'Article\ArticleController@detail');
+
+
+
+
+    // Sync Old Article Content
+    Route::get('/sync/article', 'SyncOldArticleController@index');
+
 
 });
