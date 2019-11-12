@@ -76,8 +76,10 @@ Route::group(['middleware' => ['islogin','checkper']], function () {
     Route::match(['get', 'post'], '/article/edit', 'Article\ArticleController@edit');
     Route::post('/article/del', 'Article\ArticleController@delete');
     Route::get('/article/detail', 'Article\ArticleController@detail');
+    Route::get('/article/selectcate', 'Article\ArticleController@selectcate');
 
-
+    // Tools
+    Route::post('/upload/img', 'ToolsController@uploadImg');
 
 
     // Sync Old Article Content

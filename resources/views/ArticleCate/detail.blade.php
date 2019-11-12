@@ -40,14 +40,14 @@
         <div class="layui-row">
             <div class="layui-col-xs6">
                 <div class="info-item">
-                    <span class="info-title">链接名称： </span>
+                    <span class="info-title">名称： </span>
                     <span class="info-content">{{$name}}</span>
                 </div>
             </div>
             <div class="layui-col-xs6">
                 <div class="info-item">
-                    <span class="info-title">链接地址： </span>
-                    <span class="info-content"><a href="{{$link}}" target="_blank">{{$link}}</a></span>
+                    <span class="info-title">定位： </span>
+                    <span class="info-content">{{$position}}</span>
                 </div>
             </div>
         </div>

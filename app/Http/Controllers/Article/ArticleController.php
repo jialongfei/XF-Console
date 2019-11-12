@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Article;
 
 use App\Http\Controllers\Controller;
 use App\Http\Models\Article;
+use App\Http\Models\ArticleCate;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -59,4 +60,12 @@ class ArticleController extends Controller
 
         return view('Article.detail',$info);
     }
+
+    public function selectcate(Request $request)
+    {
+        $cate_list = ArticleCate::select('name','id as value')->get()->toArray();
+
+        return ['status'=>true,'data'=>$cate_list];
+    }
+
 }
