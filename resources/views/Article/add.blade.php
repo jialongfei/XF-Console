@@ -38,21 +38,21 @@
         <div class="layui-form-item">
             <label class="layui-form-label">标题</label>
             <div class="layui-input-block">
-                <input type="text" name="title" placeholder="请输入标题" autocomplete="on" class="layui-input">
+                <input type="text" name="title" lay-verify="required" lay-reqtext="请输入标题" placeholder="请输入标题" autocomplete="on" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">关键字</label>
             <div class="layui-input-block">
-                <input type="text" name="keywords" placeholder="请输入关键字" class="layui-input">
+                <input type="text" name="keywords" lay-verify="required" lay-reqtext="请输入关键字" placeholder="请输入关键字" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">描述</label>
             <div class="layui-input-block">
-                <input type="text" name="description" placeholder="请输入描述" class="layui-input">
+                <input type="text" name="description" lay-verify="required" lay-reqtext="请输入描述" placeholder="请输入描述" class="layui-input">
             </div>
         </div>
 
@@ -89,7 +89,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">内容</label>
             <div class="layui-input-block">
-                <input type="text" name="body" placeholder="请输入内容" class="layui-input">
+                <textarea id="body" style="display: none;" class="layui-input" placeholder="请输入内容"></textarea>
             </div>
         </div>
 
@@ -112,6 +112,65 @@
             ,laydate = layui.laydate
             ,upload = layui.upload
             ,$ = layui.jquery;
+
+        // layedit 初始化
+        layedit.set({
+            uploadImage: {
+                url: '/upload/layedit/img' //接口url
+                ,headers:{
+                    'X-CSRF-TOKEN':"{{ csrf_token() }}"
+                }
+                ,type: 'POST' //默认post
+            }
+        });//注意：layedit.set 一定要放在 build 前面，否则配置全局接口将无效。
+        var editIndex = layedit.build('body', {
+            // height: 180, //设置编辑器高度
+            tool: ['strong' //加粗
+                ,'italic' //斜体
+                ,'underline' //下划线
+                ,'del' //删除线
+                ,'|' //分割线
+                ,'left' //左对齐
+                ,'center' //居中对齐
+                ,'right' //右对齐
+                ,'link' //超链接
+                ,'unlink' //清除链接
+                ,'face' //表情
+                ,'image' //插入图片
+            ]
+        }); //建立编辑器
+        // 重写layedit图片事件
+        $('.layedit-tool-image').removeAttr('layedit-event')
+        $('.layedit-tool-image input').remove()
+        upload.render({
+            elem: '.layedit-tool-image'
+            ,url: '/upload/img'
+            ,field:'image'
+            ,headers:{
+                'X-CSRF-TOKEN':"{{ csrf_token() }}"
+            }
+            ,before: function(obj){
+                layer.load(2)
+            }
+            ,done: function(res,index,upload){
+                layer.closeAll('loading')
+                if(!res.status){
+                    return layer.msg(res.msg);
+                }else{
+                    var string = '<br><img src="'+res.path+'" alt="" style="max-width: 600px" />'
+                    try {
+                        layedit.setContent(editIndex,string,true)
+                    } catch (e) {
+
+                    }
+                    layedit.sync(editIndex)
+                }
+            }
+            ,error: function(res){
+                layer.closeAll('loading')
+                return layer.msg(res.msg);
+            }
+        })
 
         //图片上传
         var uploadInst = upload.render({
@@ -160,6 +219,15 @@
 
             data.field.cates = selectArr;
 
+            var body_content = layedit.getContent(editIndex)
+
+            if (!body_content){
+                layer.msg('请输入内容');
+                return false;
+            }
+
+            data.field.body = body_content;
+
             if (data.field.status == 'on'){
                 data.field.status = "1";
             }else{
@@ -180,6 +248,7 @@
                         layer.msg(data.msg)
                     }else{
                         parent.layer.msg(data.msg)
+                        parent.layui.table.reload("tableReload");
                         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                         parent.layer.close(index); //再执行关闭
                     }

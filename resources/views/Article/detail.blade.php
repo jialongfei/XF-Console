@@ -37,6 +37,11 @@
             color: #9F9F9F;
             text-decoration:line-through
         }
+        .info-litpic img{
+            width: 230px;
+            height: 135px;
+            margin-bottom: 10px;
+        }
     </style>
 
 </head>
@@ -123,12 +128,26 @@
         </div>
 
         <div class="layui-row">
-            <img src="{{$litpic}}" alt="" class="litpic">
+            <div class="layui-col-xs12">
+                <div class="info-item">
+                    <span class="info-title">缩略图： </span>
+                    <span class="info-litpic"><img src="{{$litpic?:'/default/litpic.jpg'}}" alt="" class="litpic"></span>
+                </div>
+            </div>
         </div>
 
-        <div class="article-content">
-            {!! $body !!}
+        <div class="layui-row">
+            <div class="layui-col-xs12">
+                <div class="info-item">
+                    <span class="info-title">内容： </span>
+                    <div class="article-content">
+                        {!! $body !!}
+                    </div>
+                </div>
+            </div>
         </div>
+
+
 
     </div>
 

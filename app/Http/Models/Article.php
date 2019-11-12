@@ -12,7 +12,7 @@ class Article extends Model
 
     protected $fillable = ['title', 'cate', 'body', 'litpic', 'keywords', 'description', 'click', 'ismake', 'create_user_id', 'update_user_id', 'created_at', 'updated_at'];
 
-    public $timestamps = false;
+    public $timestamps = true;// 数据同步时请将次项改为 false
 
     public function getLists($request)
     {
@@ -64,22 +64,33 @@ class Article extends Model
     public function addData($request)
     {
 
-        echo "<pre>";
-        var_dump($request->all());exit();
+        $_cate = (array)$request->cates;
+
+        if (!$_cate) return ['status'=>false, 'msg'=>CATE_EMPTY];
+
+        $cate = implode(',',array_map(function ($v){ return $v['name']; },$_cate));
+
+        if (!$cate) return ['status'=>false, 'msg'=>CATE_ERR];
 
         $validatedData = $request->validate([
-            'name' => 'string',
-            'position' => 'nullable|string',
+            'title' => 'string',
+            'keywords' => 'string',
+            'description' => 'string',
+            'body' => 'string',
+            'click' => 'nullable|integer',
             'sort' => 'nullable|integer',
+            'litpic' => 'nullable|string',
             'status' => 'nullable|integer',
         ]);
 
         // 记录创建/更新者ID
         $validatedData['create_user_id'] = Session::get('user.id');
         $validatedData['update_user_id'] = Session::get('user.id');
+        $validatedData['cate'] = $cate;
 
-        !$validatedData['position'] && $validatedData['position'] = 'left';
+        !$validatedData['click'] && $validatedData['click'] = 0;
         !$validatedData['sort'] && $validatedData['sort'] = 100000;
+        !$validatedData['litpic'] && $validatedData['litpic'] = '/default/litpic.jpg';
         !$validatedData['status'] && $validatedData['status'] = 1;
 
         try
@@ -105,48 +116,47 @@ class Article extends Model
     public function editData($request,$id)
     {
 
-        echo "<pre>";
-        var_dump($request->all());exit();
+        $_cate = (array)$request->cates;
 
-        $old_data = $this->select('name','position','sort','status','id')->find($id)->toArray();
+        if (!$_cate) return ['status'=>false, 'msg'=>CATE_EMPTY];
 
-        // 检查接收到的修改数据是否有变化，有则验证并更新，无则忽略
-        if (array_diff($old_data,$request->all())){
-            $validatedData = $request->validate([
-                'name' => 'string',
-                'position' => 'nullable|string',
-                'sort' => 'nullable|integer',
-                'status' => 'nullable|integer',
-            ]);
+        $cate = implode(',',array_map(function ($v){ return $v['name']; },$_cate));
 
-            // 记录更新者ID
-            $validatedData['update_user_id'] = Session::get('user.id');
+        if (!$cate) return ['status'=>false, 'msg'=>CATE_ERR];
 
-            !$validatedData['position'] && $validatedData['position'] = 'left';
-            !$validatedData['sort'] && $validatedData['sort'] = 100000;
+        $validatedData = $request->validate([
+            'title' => 'string',
+            'keywords' => 'string',
+            'description' => 'string',
+            'body' => 'string',
+            'click' => 'nullable|integer',
+            'sort' => 'nullable|integer',
+            'litpic' => 'nullable|string',
+            'status' => 'nullable|integer',
+        ]);
 
-            try
-            {
-                $this->where('id','=',$id)->update($validatedData);
+        $validatedData['cate'] = $cate;
 
-                return [
-                    'status'=>true,
-                    'msg'=>'数据已更新'
-                ];
+        $validatedData['update_user_id'] = Session::get('user.id');// 记录更新者ID
 
-            } catch(\Exception $e) {
-                Log::error($e->getMessage());
+        !$validatedData['litpic'] && $validatedData['litpic'] = '/default/litpic.jpg';
 
-                return [
-                    'status'=>false,
-                    'msg'=>$e->getCode().': 网络异常，请稍后再试 或 联系管理员',
-                    'debug'=>$e->getMessage(),
-                ];
-            }
-        }else{
+        try
+        {
+            $this->where('id','=',$id)->update($validatedData);
+
             return [
                 'status'=>true,
-                'msg'=>'数据无变更'
+                'msg'=>'数据已更新'
+            ];
+
+        } catch(\Exception $e) {
+            Log::error($e->getMessage());
+
+            return [
+                'status'=>false,
+                'msg'=>$e->getCode().': 网络异常，请稍后再试 或 联系管理员',
+                'debug'=>$e->getMessage(),
             ];
         }
 

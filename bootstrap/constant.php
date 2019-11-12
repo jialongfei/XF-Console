@@ -19,3 +19,7 @@ define('UPDATE_SUCCESS','修改成功.');
 define('NETWORK_ERR','网络异常,请稍后再试.');
 
 define('PER_ERR','无相关操作权限.');
+
+define('CATE_EMPTY','请选择分类.');
+
+define('CATE_ERR','分类数据异常，请稍后再试.');

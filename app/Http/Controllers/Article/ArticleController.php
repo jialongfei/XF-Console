@@ -63,7 +63,18 @@ class ArticleController extends Controller
 
     public function selectcate(Request $request)
     {
+        $has = $request->hascate;
+
         $cate_list = ArticleCate::select('name','id as value')->get()->toArray();
+
+        if ($cate_list && $has)
+        {
+            $has_arr = explode(',',$has);
+            foreach ($cate_list as $k => $v)
+            {
+                in_array($v['name'],$has_arr) && $cate_list[$k]['selected'] = true;
+            }
+        }
 
         return ['status'=>true,'data'=>$cate_list];
     }

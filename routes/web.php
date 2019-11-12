@@ -80,6 +80,7 @@ Route::group(['middleware' => ['islogin','checkper']], function () {
 
     // Tools
     Route::post('/upload/img', 'ToolsController@uploadImg');
+    Route::post('/upload/layedit/img', 'ToolsController@layeditImg');
 
 
     // Sync Old Article Content
