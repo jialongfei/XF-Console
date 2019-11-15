@@ -37,7 +37,7 @@
             color: #9F9F9F;
             text-decoration:line-through
         }
-        .info-litpic img{
+        .banner{
             width: 230px;
             height: 135px;
             margin-bottom: 10px;
@@ -52,14 +52,14 @@
         <div class="layui-row">
             <div class="layui-col-xs6">
                 <div class="info-item">
-                    <span class="info-title">标题： </span>
-                    <span class="info-content {{$status?'title-show':'title-hide'}}">{{$title}}</span>
+                    <span class="info-title">定位： </span>
+                    <span class="info-content">{{$position}}</span>
                 </div>
             </div>
             <div class="layui-col-xs6">
                 <div class="info-item">
-                    <span class="info-title">标签： </span>
-                    <span class="info-content">{{$cate}}</span>
+                    <span class="info-title">banner图片： </span>
+                    <span class="info-content"><img src="{{$img_path?:'/default/banner.jpg'}}" alt="" class="banner"></span>
                 </div>
             </div>
         </div>
@@ -67,13 +67,13 @@
         <div class="layui-row">
             <div class="layui-col-xs6">
                 <div class="info-item">
-                    <span class="info-title">点击次数： </span>
-                    <span class="info-content">{{$click}}</span>
+                    <span class="info-title">链接地址： </span>
+                    <span class="info-content">{{$link}}</span>
                 </div>
             </div>
             <div class="layui-col-xs6">
                 <div class="info-item">
-                    <span class="info-title">排序： </span>
+                    <span class="info-title">排序规则： </span>
                     <span class="info-content">{{$sort}}</span>
                 </div>
             </div>
@@ -117,46 +117,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="layui-row">
-            <div class="layui-col-xs12">
-                <div class="info-item">
-                    <span class="info-title">关键字： </span>
-                    <span class="info-longtext">{{$keywords}}</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="layui-row">
-            <div class="layui-col-xs12">
-                <div class="info-item">
-                    <span class="info-title">描述： </span>
-                    <span class="info-longtext">{{$description}}</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="layui-row">
-            <div class="layui-col-xs12">
-                <div class="info-item">
-                    <span class="info-title">缩略图： </span>
-                    <span class="info-litpic"><img src="{{$litpic?:'/default/litpic.jpg'}}" alt="" class="litpic"></span>
-                </div>
-            </div>
-        </div>
-
-        <div class="layui-row">
-            <div class="layui-col-xs12">
-                <div class="info-item">
-                    <span class="info-title">内容： </span>
-                    <div class="article-content">
-                        {!! $body !!}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
 
     </div>
 

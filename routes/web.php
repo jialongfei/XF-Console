@@ -12,9 +12,9 @@
 */
 
 // Record SQL
-DB::listen(function($query){
-    Log::info($query->sql);
-});
+//DB::listen(function($query){
+//    Log::info($query->sql);
+//});
 
 
 
@@ -63,6 +63,13 @@ Route::group(['middleware' => ['islogin','checkper']], function () {
     Route::post('/link/del', 'Site\LinkController@delete');
     Route::get('/link/detail', 'Site\LinkController@detail');
 
+    // Site - banner
+    Route::match(['get', 'post'], '/banner', 'Site\BannerController@index');
+    Route::match(['get', 'post'], '/banner/add', 'Site\BannerController@add');
+    Route::match(['get', 'post'], '/banner/edit', 'Site\BannerController@edit');
+    Route::post('/banner/del', 'Site\BannerController@delete');
+    Route::get('/banner/detail', 'Site\BannerController@detail');
+
     // ArticleCate
     Route::match(['get', 'post'], '/article/cate', 'Article\ArticleCateController@index');
     Route::match(['get', 'post'], '/article/cate/add', 'Article\ArticleCateController@add');
@@ -81,6 +88,7 @@ Route::group(['middleware' => ['islogin','checkper']], function () {
     // Tools
     Route::post('/upload/img', 'ToolsController@uploadImg');
     Route::post('/upload/layedit/img', 'ToolsController@layeditImg');
+    Route::get('/check/route', 'ToolsController@checkroute');
 
 
     // Sync Old Article Content

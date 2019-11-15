@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Models\Permission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 class ToolsController extends Controller
 {
@@ -35,4 +37,16 @@ class ToolsController extends Controller
         ];
 
     }
+
+    public function checkroute()
+    {
+
+        $permission_list = array_map(function ($v){ return $v['path']; },Permission::where('path','!=','javascript:;')->get()->toArray());
+
+        foreach (app()->routes->getRoutes() as $k => $value)
+            $k > 5 && $value->uri != '/' && !in_array('/'.$value->uri,$permission_list) && $neglected[] = $value->uri;
+
+        return $neglected ?? [];
+    }
+
 }
