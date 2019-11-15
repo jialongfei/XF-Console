@@ -15,12 +15,13 @@ class CreateArticleCateTable extends Migration
     {
         Schema::create('article_cate', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('pid')->nullable($value = true)->default(0);
             $table->string('name');
-            $table->string('position')->default('left');
-            $table->integer('sort')->default(100000);
+            $table->string('position')->nullable($value = true)->default('left');
+            $table->integer('sort')->nullable($value = true)->default(100000);
             $table->integer('create_user_id');
             $table->integer('update_user_id');
-            $table->tinyInteger('status');
+            $table->tinyInteger('status')->nullable($value = true)->default(1);
             $table->timestamps();
         });
     }

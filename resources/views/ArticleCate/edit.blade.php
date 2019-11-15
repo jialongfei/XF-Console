@@ -21,6 +21,18 @@
         </div>
 
         <div class="layui-form-item">
+            <label class="layui-form-label">上级分类</label>
+            <div class="layui-input-block">
+                <select name="pid" id="pid" lay-search>
+                    <option value="0">无</option>
+                    @foreach ($cates as $cate)
+                        <option value="{{$cate->id}}" {{$info->pid == $cate->id ?'selected':''}}>{{$cate->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
             <label class="layui-form-label">定位</label>
             <div class="layui-input-block">
                 <select name="position" id="position">

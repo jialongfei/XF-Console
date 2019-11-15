@@ -46,8 +46,8 @@
             </div>
             <div class="layui-col-xs6">
                 <div class="info-item">
-                    <span class="info-title">定位： </span>
-                    <span class="info-content">{{$position}}</span>
+                    <span class="info-title">上级分类： </span>
+                    <span class="info-content" data-id="{{$pid}}">{{$parent_cate_name}}</span>
                 </div>
             </div>
         </div>
@@ -55,10 +55,19 @@
         <div class="layui-row">
             <div class="layui-col-xs6">
                 <div class="info-item">
+                    <span class="info-title">定位： </span>
+                    <span class="info-content">{{$position}}</span>
+                </div>
+            </div>
+            <div class="layui-col-xs6">
+                <div class="info-item">
                     <span class="info-title">排序规则： </span>
                     <span class="info-content">{{$sort}}</span>
                 </div>
             </div>
+        </div>
+
+        <div class="layui-row">
             <div class="layui-col-xs6">
                 <div class="info-item">
                     <span class="info-title">状态： </span>

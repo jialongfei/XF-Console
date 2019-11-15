@@ -10,10 +10,52 @@ class ArticleCate extends Model
 {
     protected $table = 'article_cate';
 
-    protected $fillable = ['name', 'position', 'sort', 'status', 'create_user_id', 'update_user_id', 'created_at', 'updated_at'];
+    protected $fillable = ['id', 'name', 'pid', 'position', 'sort', 'status', 'create_user_id', 'update_user_id', 'created_at', 'updated_at'];
 
     public $timestamps = true;
 
+
+    public function getOptionTree()
+    {
+        $cate_list = $this->where('status','=',1)->select('id','pid','name','position')->get();
+
+        foreach ($cate_list as $k => $v)
+            ($v->pid !== 0) &&  $this->getOptionName($cate_list[$k]);
+
+        return $cate_list;
+
+    }
+
+    public function getOptionName(&$item,$parent_id = 0)
+    {
+
+        $parent = $parent_id?$this->find($parent_id):$this->find($item->pid);
+
+        $item->name = $parent->name.'-'.$item->name;
+
+        ($parent->pid != 0) && $this->getOptionName($item,$parent->pid);
+
+        return $item;
+
+    }
+
+    public function childCategory() {
+        return $this->hasMany(get_class($this), 'pid', 'id')->select('id','pid','name');
+    }
+
+    public function getCateTree()
+    {
+        return $this->childCategory()->with('getCateTree');
+    }
+
+//    public function getCateTree($pid = 0)
+//    {
+//        $cates = $this->where('pid','=',$pid)->get();
+//
+//        foreach ($cates)
+//
+//        return $cates;
+//    }
 
     public function getLists($request)
     {

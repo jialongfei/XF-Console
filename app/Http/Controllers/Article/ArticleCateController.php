@@ -18,7 +18,14 @@ class ArticleCateController extends Controller
 
     public function add(Request $request)
     {
-        if ($request->method() == 'GET') return view('ArticleCate.add');
+        if ($request->method() == 'GET')
+        {
+            $cates = (new ArticleCate())->getOptionTree();
+
+            // $cates = ArticleCate::with('getCateTree')->select('id','pid','name')->first()->toArray(); // 有层级的
+
+            return view('ArticleCate.add',['cates'=>$cates]);
+        }
 
         return (new ArticleCate())->addData($request);
     }
@@ -33,7 +40,11 @@ class ArticleCateController extends Controller
         {
             $info = ArticleCate::find($id);
 
-            return view('ArticleCate.edit',['info'=>$info]);
+            $cates = (new ArticleCate())->getOptionTree();
+
+            // $cates = ArticleCate::with('getCateTree')->select('id','pid','name')->first()->toArray(); // 有层级的
+
+            return view('ArticleCate.edit',['info'=>$info,'cates'=>$cates]);
         }else{
             return (new ArticleCate())->editData($request,$id);
         }
@@ -57,6 +68,14 @@ class ArticleCateController extends Controller
 
         if (!$info) error_notice(DATA_ERR);
 
+        $this->getParentCateName($info);
+
         return view('ArticleCate.detail',$info);
     }
+
+    public function getParentCateName(&$info)
+    {
+        $info->parent_cate_name = ArticleCate::find($info->pid)->name;
+    }
+
 }
