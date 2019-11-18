@@ -91,10 +91,17 @@
 
 {{--    TODO: 更新内容框为富文本框 使用layui富文本框    --}}
 
+{{--        <div class="layui-form-item">--}}
+{{--            <label class="layui-form-label">内容</label>--}}
+{{--            <div class="layui-input-block">--}}
+{{--                <textarea id="body" style="display: none;" class="layui-input" placeholder="请输入内容"></textarea>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+
         <div class="layui-form-item">
             <label class="layui-form-label">内容</label>
             <div class="layui-input-block">
-                <textarea id="body" style="display: none;" class="layui-input" placeholder="请输入内容"></textarea>
+                <script id="body" name="body"></script>{{-- 编辑器的容器 --}}
             </div>
         </div>
 
@@ -109,6 +116,13 @@
 
 </div>
 
+<script src="/ueditor/ueditor.config.js"></script>{{-- 配置文件 --}}
+<script src="/ueditor/ueditor.all.js"></script>{{-- 源码文件 --}}
+
+<script>
+    var xf_ueditor = UE.getEditor('body')
+</script>
+
 <script>
     layui.use(['form', 'layedit', 'laydate', 'upload'], function(){
         var form = layui.form
@@ -119,63 +133,63 @@
             ,$ = layui.jquery;
 
         // layedit 初始化
-        layedit.set({
-            uploadImage: {
-                url: '/upload/layedit/img' //接口url
-                ,headers:{
-                    'X-CSRF-TOKEN':"{{ csrf_token() }}"
-                }
-                ,type: 'POST' //默认post
-            }
-        });//注意：layedit.set 一定要放在 build 前面，否则配置全局接口将无效。
-        var editIndex = layedit.build('body', {
-            // height: 180, //设置编辑器高度
-            tool: ['strong' //加粗
-                ,'italic' //斜体
-                ,'underline' //下划线
-                ,'del' //删除线
-                ,'|' //分割线
-                ,'left' //左对齐
-                ,'center' //居中对齐
-                ,'right' //右对齐
-                ,'link' //超链接
-                ,'unlink' //清除链接
-                ,'face' //表情
-                ,'image' //插入图片
-            ]
-        }); //建立编辑器
-        // 重写layedit图片事件
-        $('.layedit-tool-image').removeAttr('layedit-event')
-        $('.layedit-tool-image input').remove()
-        upload.render({
-            elem: '.layedit-tool-image'
-            ,url: '/upload/img'
-            ,field:'image'
-            ,headers:{
-                'X-CSRF-TOKEN':"{{ csrf_token() }}"
-            }
-            ,before: function(obj){
-                layer.load(2)
-            }
-            ,done: function(res,index,upload){
-                layer.closeAll('loading')
-                if(!res.status){
-                    return layer.msg(res.msg);
-                }else{
-                    var string = '<br><img src="'+res.path+'" alt="" style="max-width: 600px" />'
-                    try {
-                        layedit.setContent(editIndex,string,true)
-                    } catch (e) {
+        {{--layedit.set({--}}
+        {{--    uploadImage: {--}}
+        {{--        url: '/upload/layedit/img' //接口url--}}
+        {{--        ,headers:{--}}
+        {{--            'X-CSRF-TOKEN':"{{ csrf_token() }}"--}}
+        {{--        }--}}
+        {{--        ,type: 'POST' //默认post--}}
+        {{--    }--}}
+        {{--});//注意：layedit.set 一定要放在 build 前面，否则配置全局接口将无效。--}}
+        {{--var editIndex = layedit.build('body', {--}}
+        {{--    // height: 180, //设置编辑器高度--}}
+        {{--    tool: ['strong' //加粗--}}
+        {{--        ,'italic' //斜体--}}
+        {{--        ,'underline' //下划线--}}
+        {{--        ,'del' //删除线--}}
+        {{--        ,'|' //分割线--}}
+        {{--        ,'left' //左对齐--}}
+        {{--        ,'center' //居中对齐--}}
+        {{--        ,'right' //右对齐--}}
+        {{--        ,'link' //超链接--}}
+        {{--        ,'unlink' //清除链接--}}
+        {{--        ,'face' //表情--}}
+        {{--        ,'image' //插入图片--}}
+        {{--    ]--}}
+        {{--}); //建立编辑器--}}
+        {{--// 重写layedit图片事件--}}
+        {{--$('.layedit-tool-image').removeAttr('layedit-event')--}}
+        {{--$('.layedit-tool-image input').remove()--}}
+        {{--upload.render({--}}
+        {{--    elem: '.layedit-tool-image'--}}
+        {{--    ,url: '/upload/img'--}}
+        {{--    ,field:'image'--}}
+        {{--    ,headers:{--}}
+        {{--        'X-CSRF-TOKEN':"{{ csrf_token() }}"--}}
+        {{--    }--}}
+        {{--    ,before: function(obj){--}}
+        {{--        layer.load(2)--}}
+        {{--    }--}}
+        {{--    ,done: function(res,index,upload){--}}
+        {{--        layer.closeAll('loading')--}}
+        {{--        if(!res.status){--}}
+        {{--            return layer.msg(res.msg);--}}
+        {{--        }else{--}}
+        {{--            var string = '<br><img src="'+res.path+'" alt="" style="max-width: 600px" />'--}}
+        {{--            try {--}}
+        {{--                layedit.setContent(editIndex,string,true)--}}
+        {{--            } catch (e) {--}}
 
-                    }
-                    layedit.sync(editIndex)
-                }
-            }
-            ,error: function(res){
-                layer.closeAll('loading')
-                return layer.msg(res.msg);
-            }
-        })
+        {{--            }--}}
+        {{--            layedit.sync(editIndex)--}}
+        {{--        }--}}
+        {{--    }--}}
+        {{--    ,error: function(res){--}}
+        {{--        layer.closeAll('loading')--}}
+        {{--        return layer.msg(res.msg);--}}
+        {{--    }--}}
+        {{--})--}}
 
         //图片上传
         var uploadInst = upload.render({
@@ -214,15 +228,6 @@
 
         //监听提交
         form.on('submit(addform)', function(data){
-
-            var body_content = layedit.getContent(editIndex)
-
-            if (!body_content){
-                layer.msg('请输入内容');
-                return false;
-            }
-
-            data.field.body = body_content;
 
             if (data.field.status == 'on'){
                 data.field.status = "1";

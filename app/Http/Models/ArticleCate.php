@@ -31,6 +31,8 @@ class ArticleCate extends Model
 
         $parent = $parent_id?$this->find($parent_id):$this->find($item->pid);
 
+        if (!$parent) return $item;
+
         $item->name = $parent->name.'-'.$item->name;
 
         ($parent->pid != 0) && $this->getOptionName($item,$parent->pid);
