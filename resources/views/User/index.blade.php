@@ -78,6 +78,8 @@
                     ,{field:'status', title:'状态', templet: function(res){ return res.status == 1 ?'启用':'禁用'; }}
                 ]]
                 ,id: 'tableReload'
+                ,limits: [10,20,30,40,50,100] // 可选的页显示数量
+                ,limit: 20 //每页默认显示的数量
                 ,page: true
             });
 

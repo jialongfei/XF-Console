@@ -84,14 +84,12 @@ Route::group(['middleware' => ['islogin','checkper']], function () {
     Route::post('/article/del', 'Article\ArticleController@delete');
     Route::get('/article/detail', 'Article\ArticleController@detail');
 
-    // Tools
-    Route::post('/upload/img', 'ToolsController@uploadImg');
-    Route::post('/upload/layedit/img', 'ToolsController@layeditImg');
-    Route::get('/check/route', 'ToolsController@checkroute');
-
-
     // Sync Old Article Content
     Route::get('/sync/article', 'SyncOldArticleController@index');
 
-
 });
+
+// Tools
+Route::post('/upload/img', 'ToolsController@uploadImg');
+Route::post('/upload/layedit/img', 'ToolsController@layeditImg');
+Route::get('/check/route', 'ToolsController@checkroute');

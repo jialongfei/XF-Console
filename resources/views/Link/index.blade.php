@@ -77,6 +77,8 @@
                     ,{field:'update_user_name', title:'修改人'}
                 ]]
                 ,id: 'tableReload'
+                ,limits: [10,20,30,40,50,100] // 可选的页显示数量
+                ,limit: 20 //每页默认显示的数量
                 ,page: true
             });
 
