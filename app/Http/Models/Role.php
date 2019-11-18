@@ -100,7 +100,7 @@ class Role extends Model
         $old_data = $this->select('name','description','id')->find($id)->toArray();
 
         // 检查接收到的修改数据是否有变化，有则验证并更新，无则忽略
-        if (array_diff($old_data,$request->all())){
+        if (array_diff($old_data,$request->all()) || array_diff($request->all(),$old_data)){
             $validatedData = $request->validate([
                 'name' => 'string',
                 'description' => 'nullable|string',

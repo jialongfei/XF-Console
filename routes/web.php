@@ -84,6 +84,20 @@ Route::group(['middleware' => ['islogin','checkper']], function () {
     Route::post('/article/del', 'Article\ArticleController@delete');
     Route::get('/article/detail', 'Article\ArticleController@detail');
 
+    // Short ArticleCate
+    Route::match(['get', 'post'], '/short/article/cate', 'Short\ArticleCateController@index');
+    Route::match(['get', 'post'], '/short/article/cate/add', 'Short\ArticleCateController@add');
+    Route::match(['get', 'post'], '/short/article/cate/edit', 'Short\ArticleCateController@edit');
+    Route::post('/short/article/cate/del', 'Short\ArticleCateController@delete');
+    Route::get('/short/article/cate/detail', 'Short\ArticleCateController@detail');
+
+    // Short Article
+    Route::match(['get', 'post'], '/short/article', 'Short\ArticleController@index');
+    Route::match(['get', 'post'], '/short/article/add', 'Short\ArticleController@add');
+    Route::match(['get', 'post'], '/short/article/edit', 'Short\ArticleController@edit');
+    Route::post('/short/article/del', 'Short\ArticleController@delete');
+    Route::get('/short/article/detail', 'Short\ArticleController@detail');
+
     // Sync Old Article Content
     Route::get('/sync/article', 'SyncOldArticleController@index');
 
