@@ -65,7 +65,7 @@
                     ,{field:'title', title:'标题', fixed: 'left', templet: function (res) {
                             return "<span class='detail-btn' data-id='"+res.id+"'>"+res.title+"</span>";
                         }}
-                    ,{field:'cate', title:'标签'}
+                    // ,{field:'cate', title:'标签'}
                     ,{field:'click', title:'点击次数'}
                     ,{field:'status', title:'状态', templet: function (res) {
                             return res.status==1?'Show':'Hide';

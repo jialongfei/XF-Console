@@ -58,25 +58,29 @@ class Article extends Model
             ->where('a.id','=',$id)
             ->first();
 
+        $info->cate_name = '无';
+
+        $cate = ArticleCate::find($info->cate);
+
+        if ($cate)
+        {
+            (new ArticleCate())->getOptionName($cate);
+
+            $info->cate_name = $cate->name?:'无';
+        }
+
         return $info;
     }
 
     public function addData($request)
     {
 
-        $_cate = (array)$request->cates;
-
-        if (!$_cate) return ['status'=>false, 'msg'=>CATE_EMPTY];
-
-        $cate = implode(',',array_map(function ($v){ return $v['name']; },$_cate));
-
-        if (!$cate) return ['status'=>false, 'msg'=>CATE_ERR];
-
         $validatedData = $request->validate([
             'title' => 'string',
             'keywords' => 'string',
             'description' => 'string',
             'body' => 'string',
+            'cate' => 'nullable|integer',
             'click' => 'nullable|integer',
             'sort' => 'nullable|integer',
             'litpic' => 'nullable|string',
@@ -86,9 +90,9 @@ class Article extends Model
         // 记录创建/更新者ID
         $validatedData['create_user_id'] = Session::get('user.id');
         $validatedData['update_user_id'] = Session::get('user.id');
-        $validatedData['cate'] = $cate;
 
         !$validatedData['click'] && $validatedData['click'] = 0;
+        !$validatedData['cate'] && $validatedData['cate'] = 0;
         !$validatedData['sort'] && $validatedData['sort'] = 100000;
         !$validatedData['litpic'] && $validatedData['litpic'] = '/default/litpic.jpg';
         !$validatedData['status'] && $validatedData['status'] = 1;
@@ -116,30 +120,22 @@ class Article extends Model
     public function editData($request,$id)
     {
 
-        $_cate = (array)$request->cates;
-
-        if (!$_cate) return ['status'=>false, 'msg'=>CATE_EMPTY];
-
-        $cate = implode(',',array_map(function ($v){ return $v['name']; },$_cate));
-
-        if (!$cate) return ['status'=>false, 'msg'=>CATE_ERR];
-
         $validatedData = $request->validate([
             'title' => 'string',
             'keywords' => 'string',
             'description' => 'string',
             'body' => 'string',
+            'cate' => 'nullable|integer',
             'click' => 'nullable|integer',
             'sort' => 'nullable|integer',
             'litpic' => 'nullable|string',
             'status' => 'nullable|integer',
         ]);
 
-        $validatedData['cate'] = $cate;
-
         $validatedData['update_user_id'] = Session::get('user.id');// 记录更新者ID
 
         !$validatedData['litpic'] && $validatedData['litpic'] = '/default/litpic.jpg';
+        !$validatedData['cate'] && $validatedData['cate'] = 0;
 
         try
         {

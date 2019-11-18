@@ -19,7 +19,14 @@ class ArticleController extends Controller
 
     public function add(Request $request)
     {
-        if ($request->method() == 'GET') return view('Article.add');
+        if ($request->method() == 'GET')
+        {
+            $cates = (new ArticleCate())->getOptionTree();
+
+            // $cates = ArticleCate::with('getCateTree')->select('id','pid','name')->first()->toArray(); // 有层级的
+
+            return view('Article.add',['cates'=>$cates]);
+        }
 
         return (new Article())->addData($request);
     }
@@ -34,7 +41,11 @@ class ArticleController extends Controller
         {
             $info = Article::find($id);
 
-            return view('Article.edit',['info'=>$info]);
+            $cates = (new ArticleCate())->getOptionTree();
+
+            // $cates = ArticleCate::with('getCateTree')->select('id','pid','name')->first()->toArray(); // 有层级的
+
+            return view('Article.edit',['info'=>$info,'cates'=>$cates]);
         }else{
             return (new Article())->editData($request,$id);
         }
@@ -59,24 +70,6 @@ class ArticleController extends Controller
         if (!$info) error_notice(DATA_ERR);
 
         return view('Article.detail',$info);
-    }
-
-    public function selectcate(Request $request)
-    {
-        $has = $request->hascate;
-
-        $cate_list = ArticleCate::select('name','id as value')->get()->toArray();
-
-        if ($cate_list && $has)
-        {
-            $has_arr = explode(',',$has);
-            foreach ($cate_list as $k => $v)
-            {
-                in_array($v['name'],$has_arr) && $cate_list[$k]['selected'] = true;
-            }
-        }
-
-        return ['status'=>true,'data'=>$cate_list];
     }
 
 }

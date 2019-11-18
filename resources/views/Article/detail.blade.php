@@ -58,8 +58,8 @@
             </div>
             <div class="layui-col-xs6">
                 <div class="info-item">
-                    <span class="info-title">标签： </span>
-                    <span class="info-content">{{$cate}}</span>
+                    <span class="info-title">分类： </span>
+                    <span class="info-content">{{$cate_name}}</span>
                 </div>
             </div>
         </div>

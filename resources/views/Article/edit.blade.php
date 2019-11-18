@@ -57,9 +57,14 @@
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">分类</label>
+            <label class="layui-form-label">上级分类</label>
             <div class="layui-input-block">
-                <div id="cateSelect" class="xm-select"></div>
+                <select name="cate" id="cate" lay-search>
+                    <option value="0">无</option>
+                    @foreach ($cates as $cate)
+                        <option value="{{$cate->id}}" {{$info->cate == $cate->id ?'selected':''}}>{{$cate->name}}</option>
+                    @endforeach
+                </select>
             </div>
         </div>
 
@@ -212,15 +217,6 @@
         //监听提交
         form.on('submit(editform)', function(data){
 
-            // 获取当前多选选中的值
-            var selectArr = cateSelect.getValue();
-            if (selectArr.length < 1){
-                layer.msg('请选择分类信息');
-                return false;
-            }
-
-            data.field.cates = selectArr;
-
             var body_content = layedit.getContent(editIndex)
 
             if (!body_content){
@@ -269,30 +265,6 @@
             });
 
             return false;
-        });
-
-        // get cate lists for selector
-        $.ajax({
-            url: "/article/selectcate",
-            headers:{
-                'X-CSRF-TOKEN':"{{ csrf_token() }}"
-            },
-            data: {
-                hascate:"{{$info->cate}}"
-            },
-            type: "GET",
-            dataType: "json",
-            success: function(data) {
-                if(!data.status){
-                    layer.msg(data.msg)
-                }else{
-                    cateSelect = xmSelect.render({
-                        el: '#cateSelect',
-                        language: 'zn',
-                        data: data.data
-                    })
-                }
-            }
         });
 
     });
