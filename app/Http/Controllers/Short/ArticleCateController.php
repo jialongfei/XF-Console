@@ -75,6 +75,6 @@ class ArticleCateController extends Controller
 
     public function getParentCateName(&$info)
     {
-        $info->parent_cate_name = ArticleCate::find($info->pid)->name;
+        $info->parent_cate_name = ($info->pid > 0) ?ArticleCate::find($info->pid)->name:'无';
     }
 }

@@ -72,4 +72,25 @@ class ArticleController extends Controller
         return view('Article.detail',$info);
     }
 
+    /**
+     * 文章接口
+     * @param (int)$request->page
+     * @param (int)$request->limit
+     * @param (string)$request->search 可选 获取标题中包含指定字符的文章
+     * @param (int)$request->cate 可选 获取指定分类下的所有子孙分类关联的文章
+     */
+    public function articleapi(Request $request)
+    {
+        return (new Article())->articleApi($request);
+    }
+
+    /**
+     * 分类接口
+     * @param (int)$request->cate 可选 获取指定分类下的所有子分类，仅查询子分类
+     */
+    public function articlecateapi(Request $request)
+    {
+        return (new ArticleCate())->articleCateApi($request);
+    }
+
 }

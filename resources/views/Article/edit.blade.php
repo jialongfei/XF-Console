@@ -122,11 +122,6 @@
 <script src="/ueditor/ueditor.all.js"></script>{{-- 源码文件 --}}
 
 <script>
-    var xf_ueditor = UE.getEditor('body')
-</script>
-
-
-<script>
     layui.use(['form', 'layedit', 'laydate', 'upload'], function(){
         var form = layui.form
             ,layer = layui.layer
@@ -135,7 +130,13 @@
             ,upload = layui.upload
             ,$ = layui.jquery;
 
-        {{--// layedit 初始化--}}
+        var xf_ueditor = UE.getEditor('body')
+
+        xf_ueditor.ready( function( xf_ueditor ) {
+            $('#edui1').css({'z-index':'888'})
+        } );
+
+    {{--// layedit 初始化--}}
         {{--layedit.set({--}}
         {{--    uploadImage: {--}}
         {{--        url: '/upload/layedit/img' //接口url--}}

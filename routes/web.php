@@ -100,6 +100,7 @@ Route::group(['middleware' => ['islogin','checkper']], function () {
 
     // Sync Old Article Content
     Route::get('/sync/article', 'SyncOldArticleController@index');
+    Route::get('/sync/duanqi/article', 'SyncOldArticleController@duanqi');
 
 });
 

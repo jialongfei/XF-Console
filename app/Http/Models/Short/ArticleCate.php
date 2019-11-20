@@ -103,6 +103,7 @@ class ArticleCate extends Model
             'name' => 'string',
             'position' => 'nullable|string',
             'sort' => 'nullable|integer',
+            'pid' => 'nullable|integer',
             'status' => 'nullable|integer',
         ]);
 
@@ -145,6 +146,7 @@ class ArticleCate extends Model
                 'name' => 'string',
                 'position' => 'nullable|string',
                 'sort' => 'nullable|integer',
+                'pid' => 'nullable|integer',
                 'status' => 'nullable|integer',
             ]);
 

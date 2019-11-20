@@ -42,22 +42,13 @@ class ArticleCate extends Model
     }
 
     public function childCategory() {
-        return $this->hasMany(get_class($this), 'pid', 'id')->select('id','pid','name');
+        return $this->hasMany(get_class($this), 'pid', 'id')->select('id','pid','name','sort','position');
     }
 
     public function getCateTree()
     {
         return $this->childCategory()->with('getCateTree');
     }
-
-//    public function getCateTree($pid = 0)
-//    {
-//        $cates = $this->where('pid','=',$pid)->get();
-//
-//        foreach ($cates)
-//
-//        return $cates;
-//    }
 
     public function getLists($request)
     {
@@ -112,6 +103,7 @@ class ArticleCate extends Model
             'name' => 'string',
             'position' => 'nullable|string',
             'sort' => 'nullable|integer',
+            'pid' => 'nullable|integer',
             'status' => 'nullable|integer',
         ]);
 
@@ -154,6 +146,7 @@ class ArticleCate extends Model
                 'name' => 'string',
                 'position' => 'nullable|string',
                 'sort' => 'nullable|integer',
+                'pid' => 'nullable|integer',
                 'status' => 'nullable|integer',
             ]);
 
@@ -211,6 +204,31 @@ class ArticleCate extends Model
             ];
 
         }
+    }
+
+    public function articleCateApi($request)
+    {
+
+        // 框架自带方法，有层级的
+//        return self::with('getCateTree')->first();
+
+        $cate_id = (int)$request->cate;
+
+        $_response['status'] = true;
+
+        if ($cate_id > 0){
+            // 点击分类后获取当前分类下的子分类 展示在顶部导航栏
+            $cate_list = $this->select('id','pid','name','position','sort')->orderBy('sort', 'ASC')->where('status','=',1)->where('pid','=',$cate_id)->get();
+            $_response['is_ancestors'] = false;
+        }else{
+            // 按照要展示的结构 自定义的 默认获取所有一级分类展示在左侧导航栏
+            $cate_list = $this->select('id','pid','name','position','sort')->orderBy('sort', 'ASC')->where('status','=',1)->where('pid','=',0)->where('position','=','left')->get();
+            $_response['is_ancestors'] = true;
+        }
+
+        $_response['data'] = $cate_list;
+
+        return $_response;
     }
 
 }

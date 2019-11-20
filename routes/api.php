@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Check Api Source
+Route::get('/article', 'Article\ArticleController@articleapi');
+
+Route::get('/article/cate', 'Article\ArticleController@articlecateapi');

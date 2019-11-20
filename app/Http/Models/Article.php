@@ -181,4 +181,65 @@ class Article extends Model
         }
     }
 
+    public function articleApi($request)
+    {
+
+        $where = [];
+
+        $page = (int)$request->page-1;
+        $limit = (int)$request->limit;
+
+        $request->search && $where[] = ['a.title','like','%'.$request->search.'%'];
+
+        $query = $this->from('article as a')
+            ->leftJoin('users as create_u','a.create_user_id','=','create_u.id')
+            ->leftJoin('users as update_u','a.update_user_id','=','update_u.id')
+            ->select(['a.*', 'create_u.name as create_user_name', 'update_u.name as update_user_name'])
+            ->where($where);
+
+        $cate = (int)$request->cate;
+
+        if ($cate){
+            // 获取当前分类下的所有分类
+            $cate_lists = ArticleCate::where('pid','=',$cate)->select('id')->get()->toArray();
+
+            $cate_ids = [];
+            $cate_ids[] = $cate;
+
+            if ($cate_lists){
+                $this->getChildCateIds($cate_lists,$cate_ids);
+            }
+
+            $query->whereIn('cate',$cate_ids);
+
+        }
+
+        $list = $query->orderBy('created_at', 'DESC')
+            ->offset($page*$limit)->limit($limit)
+            ->get()
+            ->toArray();
+
+        $count = $query->orderBy('created_at', 'DESC')
+            ->count('*');
+
+        return [
+            'status'=>true,
+            'count'=>$count,
+            'data'=> $list
+        ];
+    }
+
+    public function getChildCateIds($cate_list,&$cate_ids)
+    {
+        $current_cate_ids = array_map(function ($v){ return $v['id']; },$cate_list);
+
+        $cate_ids = array_merge($cate_ids,$current_cate_ids);
+
+        $new_cate_list = ArticleCate::whereIn('pid',$current_cate_ids)->select('id')->get()->toArray();
+
+        $new_cate_list && $this->getChildCateIds($new_cate_list,$cate_ids);
+
+        return $cate_ids;
+    }
+
 }
