@@ -209,9 +209,6 @@ class ArticleCate extends Model
     public function articleCateApi($request)
     {
 
-        // 框架自带方法，有层级的
-//        return self::with('getCateTree')->first();
-
         $cate_id = (int)$request->cate;
 
         $_response['status'] = true;
@@ -221,6 +218,10 @@ class ArticleCate extends Model
             $cate_list = $this->select('id','pid','name','position','sort')->orderBy('sort', 'ASC')->where('status','=',1)->where('pid','=',$cate_id)->get();
             $_response['is_ancestors'] = false;
         }else{
+
+            // 框架自带方法，有层级的
+            return ['status'=>true,'data'=>self::with('getCateTree')->first()];
+
             // 按照要展示的结构 自定义的 默认获取所有一级分类展示在左侧导航栏
             $cate_list = $this->select('id','pid','name','position','sort')->orderBy('sort', 'ASC')->where('status','=',1)->where('pid','=',0)->where('position','=','left')->get();
             $_response['is_ancestors'] = true;

@@ -16,7 +16,6 @@ function generate_password($pwd){
     return password_hash($pwd,PASSWORD_DEFAULT);
 }
 
-
 function img_upload_one($file, $disk='avatar'){
     // 1.是否上传成功
     if (! $file->isValid()) {

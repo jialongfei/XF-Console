@@ -93,4 +93,28 @@ class ArticleController extends Controller
         return (new ArticleCate())->articleCateApi($request);
     }
 
+    /**
+     * 详情接口
+     * @param (int)$request->id 必选 获取指定ID的文章详情
+     */
+    public function articledetailapi(Request $request)
+    {
+        $id = (int)$request->id;
+
+        if ($id < 1) return ['status'=>false,'msg'=>MISS_PAR];
+
+        $info = (new Article())->getDetail($id);
+
+        if (!$info) return ['status'=>false,'msg'=>DATA_ERR];
+
+        // 处理图片路径
+        if ($info->body){
+            // 匹配到指定字符，并在其前面插入指定字符串
+            $info->content = preg_replace('#src="/([^"]+?)"#','src="http://official.com/$1"',$info->body);
+        }
+
+        return ['status'=>true,'data'=>$info];
+
+    }
+
 }

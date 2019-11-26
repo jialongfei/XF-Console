@@ -13,7 +13,11 @@ use Illuminate\Http\Request;
 |
 */
 
-// Check Api Source
-Route::get('/article', 'Article\ArticleController@articleapi');
+Route::middleware('cors')->group(function () {
+    // Check Api Source
+    Route::get('/article', 'Article\ArticleController@articleapi');
 
-Route::get('/article/cate', 'Article\ArticleController@articlecateapi');
+    Route::get('/article/{id}', 'Article\ArticleController@articledetailapi');
+
+    Route::get('/articlecate', 'Article\ArticleController@articlecateapi');
+});

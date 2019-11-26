@@ -98,6 +98,13 @@ Route::group(['middleware' => ['islogin','checkper']], function () {
     Route::post('/short/article/del', 'Short\ArticleController@delete');
     Route::get('/short/article/detail', 'Short\ArticleController@detail');
 
+    // Album
+    Route::match(['get', 'post'], '/album', 'Album\AlbumController@index');
+    Route::match(['get', 'post'], '/album/add', 'Album\AlbumController@add');
+    Route::match(['get', 'post'], '/album/edit', 'Album\AlbumController@edit');
+    Route::post('/album/del', 'Album\AlbumController@delete');
+    Route::get('/album/detail', 'Album\AlbumController@detail');
+
     // Sync Old Article Content
     Route::get('/sync/article', 'SyncOldArticleController@index');
     Route::get('/sync/duanqi/article', 'SyncOldArticleController@duanqi');
