@@ -65,8 +65,11 @@
                     ,{field:'title', title:'标题', fixed: 'left', templet: function (res) {
                             return "<span class='detail-btn' data-id='"+res.id+"'>"+res.title+"</span>";
                         }}
-                    ,{field:'litpic', title:'封面', templet: function (res) {
-                            return "<img class='table-litpic' src='"+res.litpic+"'>";
+                    // ,{field:'litpic', title:'封面', templet: function (res) {
+                    //         return "<img class='table-litpic' src='"+res.litpic+"'>";
+                    //     }}
+                    ,{field:'cate', title:'图片管理', templet: function (res) {
+                            return "<span class='img-list-btn' style='cursor: pointer;color: #5fb5f3' data-id='"+res.id+"'>图片管理</span>";
                         }}
                     // ,{field:'cate', title:'分类'}
                     ,{field:'click', title:'点击次数'}
@@ -215,6 +218,18 @@
                     area: [document.documentElement.clientWidth*0.7 +'px', document.documentElement.clientHeight*0.9 +'px'],
                     shadeClose:true,
                     content: [window.location.href+'/detail'+'?id='+$(this).data('id'), 'yes'], // 若禁止显示iframe中的滚动条将 yes 改为 no
+                    anim:0,
+                    id:'detailPage'
+                });
+            })
+
+            $(document).on('click','.img-list-btn',function(){
+                layer.open({
+                    type: 2,
+                    title: '图片管理',
+                    area: [document.documentElement.clientWidth*0.7 +'px', document.documentElement.clientHeight*0.9 +'px'],
+                    shadeClose:true,
+                    content: [window.location.href+'/photoinfo'+'?id='+$(this).data('id'), 'yes'], // 若禁止显示iframe中的滚动条将 yes 改为 no
                     anim:0,
                     id:'detailPage'
                 });

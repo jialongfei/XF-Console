@@ -223,13 +223,12 @@ class Article extends Model
 
         }
 
+        $count = $query->count('*');
+
         $list = $query->orderBy('created_at', 'DESC')
             ->offset($page*$limit)->limit($limit)
             ->get()
             ->toArray();
-
-        $count = $query->orderBy('created_at', 'DESC')
-            ->count('*');
 
         if ($count > 0){
             foreach ($list as $k => $v)

@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 
 Route::middleware('cors')->group(function () {
     // Check Api Source
+    Route::get('/main', 'Api\OfficialSiteController@index');
+
     Route::get('/article', 'Article\ArticleController@articleapi');
 
     Route::get('/article/{id}', 'Article\ArticleController@articledetailapi');

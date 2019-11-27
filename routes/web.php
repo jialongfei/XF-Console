@@ -102,8 +102,11 @@ Route::group(['middleware' => ['islogin','checkper']], function () {
     Route::match(['get', 'post'], '/album', 'Album\AlbumController@index');
     Route::match(['get', 'post'], '/album/add', 'Album\AlbumController@add');
     Route::match(['get', 'post'], '/album/edit', 'Album\AlbumController@edit');
+    Route::match(['get', 'post'], '/album/photoinfo', 'Album\AlbumController@photoinfo');
+    Route::match(['get', 'post'], '/photoinfo/add', 'Album\AlbumController@photoadd');
     Route::post('/album/del', 'Album\AlbumController@delete');
     Route::get('/album/detail', 'Album\AlbumController@detail');
+    Route::post('/photoinfo/del', 'Album\AlbumController@photodel');
 
     // Sync Old Article Content
     Route::get('/sync/article', 'SyncOldArticleController@index');

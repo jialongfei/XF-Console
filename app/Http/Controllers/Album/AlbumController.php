@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Album;
 
 use App\Http\Controllers\Controller;
 use App\Http\Models\Album;
+use App\Http\Models\Photo;
 use Illuminate\Http\Request;
 
 class AlbumController extends Controller
@@ -67,6 +68,37 @@ class AlbumController extends Controller
         if (!$info) error_notice(DATA_ERR);
 
         return view('Album.detail',$info);
+    }
+
+    public function photoinfo(Request $request)
+    {
+        $id = (int)$request->id;
+
+        if (!$id) error_notice(MISS_PAR);;
+
+        if ($request->method() == 'GET')
+        {
+            return view('Album.photoinfo',['id'=>$id]);
+        }else{
+            // 获取当前相册中所有图片并返回
+            return (new Photo())->getLists($id);
+        }
+    }
+
+    public function photodel(Request $request)
+    {
+        if ($request->method() == 'GET') return ['status'=>false,'msg'=>REQUEST_ERR];
+
+        $id = (int)$request->id;
+
+        return (new Photo())->deleteOne($id);
+    }
+
+    public function photoadd(Request $request)
+    {
+        if ($request->method() == 'GET') return ['status'=>false,'msg'=>REQUEST_ERR];
+
+        return (new Photo())->addOne($request);
     }
 
 }
